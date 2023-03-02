@@ -42,8 +42,27 @@
       :inputIsValid="v$.form.age.$invalid === false"
       @focusedInput="v$.$reset()"
       @blurredInput="v$.form.age.$touch"
-      @updatedInput="(val) => (formStore.form.age= val)"
+      @updatedInput="(val) => (formStore.form.age = val)"
     />
+    <inputField
+      inputmode="numeric"
+      pattern="\d*"
+      inputName="usersCost"
+      inputLabel="your cost"
+      inputPlaceholder="$4000"
+      :inputModel="formStore.form.costMoneyFormat"
+      :inputErrors="v$.form.cost.$errors"
+      :inputIsValid="v$.form.cost.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="v$.form.cost.$touch"
+      @updatedInput="(val) => {
+        formStore.form.costMoneyFormat = val;
+        formStore.handleMoneyFieldUpdate(val, 'costMoneyFormat', 'cost')
+      }"
+    />
+      <!--
+        // if the formatted field has a value on load, it does not read it
+         @blurredInput="formStore.handleMoneyFieldBlur('costMoneyFormat', 'cost'); v$.form.cost.$touch" -->
     <inputField
       type="password"
       inputName="userPassword"
@@ -63,8 +82,6 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength, between, helpers } from '@vuelidate/validators'
-
-import formatter from './helpers/formatter'
 
 import { reactive } from 'vue'
 import { useFormStore } from './stores/form'
@@ -90,6 +107,10 @@ export default {
           required: helpers.withMessage('Add your age brah', required),
           between: helpers.withMessage('your age is out of range brah', between(18, 69))
         },
+        cost: {
+          required: helpers.withMessage('Add your cost brah', required),
+          between: helpers.withMessage('your cost is out of range brah', between(1000, 500000))
+        },
         password: {
           $model: formStore.form.password,
           required,
@@ -106,6 +127,7 @@ export default {
         console.log('valid form')
       }
     }
+
     v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
     return { formStore, v$, submitForm }
   },

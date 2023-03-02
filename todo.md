@@ -1,3 +1,4 @@
 - [] Add number formatting options to inputs
+  - [] On the updatedInput method for the costMoneyFormat, stip all non integers and update the cost state item. Check the validation still applies.
 - [x] Set up a central store to control the validations
   - (Issues adding vuelidate to store)[https://www.reddit.com/r/vuejs/comments/tv4n0b/using_vuelidate_inside_pinia_store/]
