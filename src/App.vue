@@ -18,7 +18,7 @@
       :inputIsValid="v$.formStore.form.name.$invalid === false"
       @focusedInput="v$.$reset()"
       @blurredInput="v$.formStore.form.name.$touch"
-      @updateModel="(val) => (formStore.form.name= val)"
+      @updatedInput="(val) => (formStore.form.name= val)"
     />
     <inputField
       type="email"
@@ -30,7 +30,7 @@
       :inputIsValid="v$.formStore.form.email.$invalid === false"
       @focusedInput="v$.$reset()"
       @blurredInput="v$.formStore.form.email.$touch"
-      @updateModel="(val) => (formStore.form.email= val)"
+      @updatedInput="(val) => (formStore.form.email= val)"
     />
     <inputField
       type="number"
@@ -42,7 +42,7 @@
       :inputIsValid="v$.formStore.form.age.$invalid === false"
       @focusedInput="v$.$reset()"
       @blurredInput="v$.formStore.form.age.$touch"
-      @updateModel="(val) => (formStore.form.age= val)"
+      @updatedInput="(val) => (formStore.form.age= val)"
     />
     <inputField
       type="password"
@@ -53,7 +53,7 @@
       :inputIsValid="v$.formStore.form.password.$invalid === false"
       @focusedInput="v$.$reset()"
       @blurredInput="v$.formStore.form.password.$touch"
-      @updateModel="(val) => (formStore.form.password= val)"
+      @updatedInput="(val) => (formStore.form.password= val)"
     />
     <div class="buttons-w">
       <button :disabled="v$.formStore.form.$invalid" class="btn btn-primary">Login</button>

@@ -13,31 +13,28 @@
       :placeholder="inputPlaceholder"
       :name="inputName"
       :value="inputModel"
-      @input="$emit('updateModel', $event.target.value)"
-
+      @input="$emit('updatedInput', $event.target.value)"
       @focus="$emit('focusedInput')"
       @blur="$emit('blurredInput')"
     >
     <ul
-      class="field-input-errors" 
-      v-for="(error, index) of inputErrors"
-      :key="index"
+      class="field-input-errors"
     >
-      <slide-up-down
-        tag="li"
-        v-model="inputErrors"
-        :duration="800"
+    <TransitionGroup name="slide">
+      <li
+        v-for="(error, index) of inputErrors"
         class="field-input-error"
+        :key="index"
       >
-      {{ error.$message }}
-      </slide-up-down>
+        {{ error.$message }}
+      </li>
+    </TransitionGroup>
     </ul>
   </div>
 </template>
 
 <script setup>
-import SlideUpDown from 'vue3-slide-up-down'
-import { toRefs } from 'vue'
+import { toRefs, computed } from 'vue'
   const props = defineProps({
     inputModel: {
       type: [String, Number],
@@ -61,14 +58,17 @@ import { toRefs } from 'vue'
       type: String,
     },
   }),
+  hasErrors = computed(()=>{
+    return inputErrors.length > 1
+  }),
   { inputModel, inputErrors, inputIsValid, inputName, inputLabel, inputPlaceholder } = toRefs(props)
 </script>
 <style scoped lang="scss">
 .field {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
   width: 100%;
-
   &-label {
     display: block;
     font-family: "Roboto Slab",georgia,serif;
@@ -79,13 +79,13 @@ import { toRefs } from 'vue'
   &-input {
     border-radius: 4px;
     border: 1px solid;
-    border-color: #cfe890;
-    color: #7c7c7c;
+    border-color: #7c7c7c;
+    color: #434343;
     display: block;
+    font-size: 1rem;
+    outline: none;
     padding: .5rem;
     transition: border-color .5s;
-    width: 100%;
-
     &-errors {
       list-style: none;
       margin: 0;
@@ -104,6 +104,13 @@ import { toRefs } from 'vue'
       border-color: red;
     }
   }
+  &-input-error {
+    color: red;
+    font-size: 14px;
+    line-height: 1;
+    padding: 8px 0;
+  }
+
   &-valid {
     color: green;
     .field-input,
@@ -115,6 +122,20 @@ import { toRefs } from 'vue'
       border-color: green;
     }
   }
-
 }
+
+.slide-enter-active,
+.slide-leave-active {
+  max-height: 100px;
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  max-height: 0px;
+  transform: translateX(15px);
+}
+
+
 </style>
