@@ -21,7 +21,7 @@
         class="form-control"
         placeholder="Enter your username"
         type="email"
-        v-model="state.form.email"
+        v-model="formStore.form.email"
         @focus="v$.$reset()"
         @blur="v$.form.email.$touch"
       >
@@ -43,7 +43,7 @@
         class="form-control"
         placeholder="Enter your password"
         type="password"
-        v-model="state.form.password"
+        v-model="formStore.form.password"
         @focus="v$.$reset()"
         @blur="v$.form.password.$touch"
       >
@@ -66,15 +66,17 @@ import { required, email, minLength, helpers } from '@vuelidate/validators'
 import formatter from './helpers/formatter'
 
 import { reactive } from 'vue'
+import { useFormStore } from './stores/form'
 
 export default {
   setup () {
-    const state = reactive({
-      form: {
-        email: '',
-        password: '',
-      }
-    }),
+    const formStore = useFormStore(),
+    // const formStore = reactive({
+    //   form: {
+    //     email: '',
+    //     password: '',
+    //   }
+    // }),
     rules = {
       form: {
         email: {
@@ -82,12 +84,13 @@ export default {
           email: helpers.withMessage('Make it an email brah', email),
         },
         password: {
+          $model: formStore.form.password,
           required,
           min: minLength(6)
         },
       },
     },
-    v$ = useVuelidate(rules, state),
+    v$ = useVuelidate(rules, formStore.form),
     submitForm = async () => {
       const isFormValid = await v$.value.$validate()
       if (!isFormValid) {
@@ -96,7 +99,8 @@ export default {
         console.log('valid form')
       }
     }
-    return { state, v$, submitForm }
+    v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
+    return { formStore, v$, submitForm }
   },
  }
 </script>
