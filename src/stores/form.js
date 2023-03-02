@@ -4,6 +4,7 @@ export const useFormStore = defineStore('FormStore', {
   state: () => {
     return {
       form: {
+        name: 'GGF',
         email: '',
         password: '',
       }

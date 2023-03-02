@@ -9,57 +9,46 @@
     </a>
   </div>
   <form @submit.prevent="submitForm">
-    <div
-      class="form-group"
-      :class="{
-        error: v$.form.email.$errors.length,
-        valid: v$.form.email.$invalid === false,
-      }"
-    >
-      <label for="">Email</label>
-      <input
-        class="form-control"
-        placeholder="Enter your username"
-        type="email"
-        v-model="formStore.form.email"
-        @focus="v$.$reset()"
-        @blur="v$.form.email.$touch"
-      >
-      <div class="pre-icon os-icon os-icon-user-male-circle"></div>
-      <div class="input-errors" v-for="(error, index) of v$.form.email.$errors" :key="index">
-        <div class="error-msg">{{ error.$message }}</div>
-      </div>
-    </div>
-
-    <div
-      class="form-group"
-      :class="{
-        error: v$.form.password.$errors.length,
-        valid: v$.form.password.$invalid === false,
-      }"
-    >
-      <label for="">Password</label>
-      <input
-        class="form-control"
-        placeholder="Enter your password"
-        type="password"
-        v-model="formStore.form.password"
-        @focus="v$.$reset()"
-        @blur="v$.form.password.$touch"
-      >
-      <div class="pre-icon os-icon os-icon-fingerprint"></div>
-      <div class="input-errors" v-for="(error, index) of v$.form.password.$errors" :key="index">
-        <div class="error-msg">{{ error.$message }}</div>
-      </div>
-    </div>
+    <inputField
+      inputName="userName"
+      inputLabel="your name"
+      inputPlaceholder="John Doe..."
+      :inputModel="formStore.form.name"
+      :inputErrors="v$.formStore.form.name.$errors"
+      :inputIsValid="v$.formStore.form.name.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="v$.formStore.form.name.$touch"
+      @updateModel="(val) => (formStore.form.name= val)"
+    />
+    <inputField
+      type="email"
+      inputName="userEmail"
+      inputLabel="your email"
+      inputPlaceholder="JohnDoe@me.com"
+      :inputModel="formStore.form.email"
+      :inputErrors="v$.formStore.form.email.$errors"
+      :inputIsValid="v$.formStore.form.email.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="v$.formStore.form.email.$touch"
+      @updateModel="(val) => (formStore.form.email= val)"
+    />
+    <inputField
+      type="password"
+      inputName="userPassword"
+      inputLabel="your password"
+      :inputModel="formStore.form.password"
+      :inputErrors="v$.formStore.form.password.$errors"
+      :inputIsValid="v$.formStore.form.password.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="v$.formStore.form.password.$touch"
+      @updateModel="(val) => (formStore.form.password= val)"
+    />
     <div class="buttons-w">
-      <button :disabled="v$.form.$invalid" class="btn btn-primary">Login</button>
+      <button :disabled="v$.formStore.form.$invalid" class="btn btn-primary">Login</button>
     </div>
-
   </form>
 </template>
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength, helpers } from '@vuelidate/validators'
 
@@ -68,27 +57,31 @@ import formatter from './helpers/formatter'
 import { reactive } from 'vue'
 import { useFormStore } from './stores/form'
 
+import inputField from './components/InputField.vue'
+
 export default {
+  components: {
+    inputField,
+  },
   setup () {
     const formStore = useFormStore(),
-    // const formStore = reactive({
-    //   form: {
-    //     email: '',
-    //     password: '',
-    //   }
-    // }),
     rules = {
-      form: {
-        email: {
-          required: helpers.withMessage('Fill it in brah', required),
-          email: helpers.withMessage('Make it an email brah', email),
+      formStore: {
+        form: {
+          name: {
+            required: helpers.withMessage('Fill in ya name brah', required),
+          },
+          email: {
+            required: helpers.withMessage('Fill it in brah', required),
+            email: helpers.withMessage('Make it an email brah', email),
+          },
+          password: {
+            $model: formStore.form.password,
+            required,
+            min: minLength(6)
+          },
         },
-        password: {
-          $model: formStore.form.password,
-          required,
-          min: minLength(6)
-        },
-      },
+      }
     },
     v$ = useVuelidate(rules, formStore.form),
     submitForm = async () => {
@@ -99,7 +92,7 @@ export default {
         console.log('valid form')
       }
     }
-    v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
+    v$.value.formStore.$model = formStore // this is needed to set the model for vuelidate with the store
     return { formStore, v$, submitForm }
   },
  }
