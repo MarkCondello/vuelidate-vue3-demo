@@ -14,10 +14,10 @@
       inputLabel="your name"
       inputPlaceholder="John Doe..."
       :inputModel="formStore.form.name"
-      :inputErrors="v$.formStore.form.name.$errors"
-      :inputIsValid="v$.formStore.form.name.$invalid === false"
+      :inputErrors="v$.form.name.$errors"
+      :inputIsValid="v$.form.name.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="v$.formStore.form.name.$touch"
+      @blurredInput="v$.form.name.$touch"
       @updatedInput="(val) => (formStore.form.name= val)"
     />
     <inputField
@@ -26,10 +26,10 @@
       inputLabel="your email"
       inputPlaceholder="JohnDoe@me.com"
       :inputModel="formStore.form.email"
-      :inputErrors="v$.formStore.form.email.$errors"
-      :inputIsValid="v$.formStore.form.email.$invalid === false"
+      :inputErrors="v$.form.email.$errors"
+      :inputIsValid="v$.form.email.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="v$.formStore.form.email.$touch"
+      @blurredInput="v$.form.email.$touch"
       @updatedInput="(val) => (formStore.form.email= val)"
     />
     <inputField
@@ -38,10 +38,10 @@
       inputLabel="your age"
       inputPlaceholder="40"
       :inputModel="formStore.form.age"
-      :inputErrors="v$.formStore.form.age.$errors"
-      :inputIsValid="v$.formStore.form.age.$invalid === false"
+      :inputErrors="v$.form.age.$errors"
+      :inputIsValid="v$.form.age.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="v$.formStore.form.age.$touch"
+      @blurredInput="v$.form.age.$touch"
       @updatedInput="(val) => (formStore.form.age= val)"
     />
     <inputField
@@ -49,14 +49,14 @@
       inputName="userPassword"
       inputLabel="your password"
       :inputModel="formStore.form.password"
-      :inputErrors="v$.formStore.form.password.$errors"
-      :inputIsValid="v$.formStore.form.password.$invalid === false"
+      :inputErrors="v$.form.password.$errors"
+      :inputIsValid="v$.form.password.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="v$.formStore.form.password.$touch"
+      @blurredInput="v$.form.password.$touch"
       @updatedInput="(val) => (formStore.form.password= val)"
     />
     <div class="buttons-w">
-      <button :disabled="v$.formStore.form.$invalid" class="btn btn-primary">Login</button>
+      <button :disabled="v$.form.$invalid" class="btn btn-primary">Login</button>
     </div>
   </form>
 </template>
@@ -78,26 +78,24 @@ export default {
   setup () {
     const formStore = useFormStore(),
     rules = {
-      formStore: {
-        form: {
-          name: {
-            required: helpers.withMessage('Fill in ya name brah', required),
-          },
-          email: {
-            required: helpers.withMessage('Fill it in brah', required),
-            email: helpers.withMessage('Make it an email brah', email),
-          },
-          age: {
-            required: helpers.withMessage('Add your age brah', required),
-            between: helpers.withMessage('your age is out of range brah', between(18, 69))
-          },
-          password: {
-            $model: formStore.form.password,
-            required,
-            min: minLength(6)
-          },
+      form: {
+        name: {
+          required: helpers.withMessage('Fill in ya name brah', required),
         },
-      }
+        email: {
+          required: helpers.withMessage('Fill it in brah', required),
+          email: helpers.withMessage('Make it an email brah', email),
+        },
+        age: {
+          required: helpers.withMessage('Add your age brah', required),
+          between: helpers.withMessage('your age is out of range brah', between(18, 69))
+        },
+        password: {
+          $model: formStore.form.password,
+          required,
+          min: minLength(6)
+        },
+      },
     },
     v$ = useVuelidate(rules, formStore.form),
     submitForm = async () => {
@@ -108,7 +106,7 @@ export default {
         console.log('valid form')
       }
     }
-    v$.value.formStore.$model = formStore // this is needed to set the model for vuelidate with the store
+    v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
     return { formStore, v$, submitForm }
   },
  }
