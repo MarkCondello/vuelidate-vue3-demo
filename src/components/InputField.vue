@@ -6,7 +6,7 @@
       'field-valid': inputIsValid,
     }"
   >
-    <label :for="inputName" v-html="inputLabel" />
+    <label class="field-label" :for="inputName" v-html="inputLabel" />
     <input
       v-bind="$attrs"
       class="field-input"
@@ -23,13 +23,21 @@
       v-for="(error, index) of inputErrors"
       :key="index"
     >
-      <li class="field-input-error">{{ error.$message }}</li>
+      <slide-up-down
+        tag="li"
+        v-model="inputErrors"
+        :duration="800"
+        class="field-input-error"
+      >
+      {{ error.$message }}
+      </slide-up-down>
     </ul>
   </div>
 </template>
 
 <script setup>
- import { toRefs } from 'vue'
+import SlideUpDown from 'vue3-slide-up-down'
+import { toRefs } from 'vue'
   const props = defineProps({
     inputModel: {
       type: [String, Number],
@@ -55,3 +63,58 @@
   }),
   { inputModel, inputErrors, inputIsValid, inputName, inputLabel, inputPlaceholder } = toRefs(props)
 </script>
+<style scoped lang="scss">
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &-label {
+    display: block;
+    font-family: "Roboto Slab",georgia,serif;
+    font-weight: 700;
+    margin-bottom: .25rem;
+    transition: color .5s;
+  }
+  &-input {
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: #cfe890;
+    color: #7c7c7c;
+    display: block;
+    padding: .5rem;
+    transition: border-color .5s;
+    width: 100%;
+
+    &-errors {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  &-error {
+    color: red;
+    .field-input,
+    .field-label{
+      color: red;
+    }
+    .field-input {
+      color: red;
+      border-color: red;
+    }
+  }
+  &-valid {
+    color: green;
+    .field-input,
+    .field-label{
+      color: green;
+    }
+    .field-input {
+      color: green;
+      border-color: green;
+    }
+  }
+
+}
+</style>

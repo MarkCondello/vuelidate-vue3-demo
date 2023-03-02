@@ -33,6 +33,18 @@
       @updateModel="(val) => (formStore.form.email= val)"
     />
     <inputField
+      type="number"
+      inputName="userAge"
+      inputLabel="your age"
+      inputPlaceholder="40"
+      :inputModel="formStore.form.age"
+      :inputErrors="v$.formStore.form.age.$errors"
+      :inputIsValid="v$.formStore.form.age.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="v$.formStore.form.age.$touch"
+      @updateModel="(val) => (formStore.form.age= val)"
+    />
+    <inputField
       type="password"
       inputName="userPassword"
       inputLabel="your password"
@@ -50,7 +62,7 @@
 </template>
 <script>
 import useVuelidate from '@vuelidate/core'
-import { required, email, minLength, helpers } from '@vuelidate/validators'
+import { required, email, minLength, between, helpers } from '@vuelidate/validators'
 
 import formatter from './helpers/formatter'
 
@@ -75,6 +87,10 @@ export default {
             required: helpers.withMessage('Fill it in brah', required),
             email: helpers.withMessage('Make it an email brah', email),
           },
+          age: {
+            required: helpers.withMessage('Add your age brah', required),
+            between: helpers.withMessage('your age is out of range brah', between(18, 69))
+          },
           password: {
             $model: formStore.form.password,
             required,
@@ -98,7 +114,6 @@ export default {
  }
 </script>
 
-
 <style scoped lang="scss">
 .logo {
   height: 6em;
@@ -112,13 +127,8 @@ export default {
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
-
-.form-group {
-  &.error {
-    color: red;
-  }
-  &.valid {
-    color: green;
-  }
+form {
+  position: relative;
+  width: 100%;
 }
 </style>

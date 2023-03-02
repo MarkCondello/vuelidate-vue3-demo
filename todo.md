@@ -1,3 +1,3 @@
 - [] Add number formatting options to inputs
-- [] Set up a central store to control the validations ????
+- [x] Set up a central store to control the validations
   - (Issues adding vuelidate to store)[https://www.reddit.com/r/vuejs/comments/tv4n0b/using_vuelidate_inside_pinia_store/]
