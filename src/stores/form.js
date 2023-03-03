@@ -27,16 +27,17 @@ export const useFormStore = defineStore('FormStore', {
       }
      console.log({val,modelToFormatState: this.form[modelToFormat], modelToUpdateState: this.form[modelToUpdate]})
     },
-    // handleMoneyFieldBlur(modelToFormat, modelToUpdate){
-    //   if (this.form[modelToFormat]) {
-    //     console.log('reached check for modelToFormat blur')
-    //     const numberValue = Number.parseInt(this.form[modelToFormat])
-    //     this.form[modelToUpdate] = Formatter.stripNonIntegers(numberValue)
-    //   } else {
-    //     this.form[modelToFormat] = ''
-    //     this.form[modelToUpdate] = null
-    //   }
-    // }
+    handleMoneyFieldBlur(modelToFormat, modelToUpdate){
+      const numberValue = Number.parseInt(Formatter.stripNonIntegers(this.form[modelToFormat]))
+
+      if (Number.isInteger(numberValue)) {
+        console.log('reached check for modelToFormat blur')
+        this.form[modelToUpdate] = numberValue
+      } else {
+        this.form[modelToFormat] = ''
+        this.form[modelToUpdate] = null
+      }
+    }
   },
   getters: {},
 })

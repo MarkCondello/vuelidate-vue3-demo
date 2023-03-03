@@ -7,19 +7,22 @@
     }"
   >
     <label class="field-label" :for="inputName" v-html="inputLabel" />
-
-    <!-- <div class="field-input" -->
-      <!-- <div class="field-input-prefix" -->
-    <input
-      v-bind="$attrs"
-      class="field-input"
-      :placeholder="inputPlaceholder"
-      :name="inputName"
-      :value="inputModel"
-      @input="$emit('updatedInput', $event.target.value)"
-      @focus="$emit('focusedInput')"
-      @blur="$emit('blurredInput')"
-    >
+    <div class="field-input">
+      <div class="field-prefix" v-if="inputPrefix">
+        {{ inputPrefix }}
+      </div>
+      <input
+        v-bind="$attrs"
+        :class="{'field-has-prefix': inputPrefix}"
+        :placeholder="inputPlaceholder"
+        :name="inputName"
+        :value="inputModel"
+        @input="$emit('updatedInput', $event.target.value)"
+        @focus="$emit('focusedInput')"
+        @blur="$emit('blurredInput')"
+      >
+          <!-- class="field-input" -->
+    </div>
     <ul
       class="field-input-errors"
     >
@@ -60,9 +63,9 @@ import { toRefs, computed } from 'vue'
     inputPlaceholder: {
       type: String,
     },
-  }),
-  hasErrors = computed(()=>{
-    return inputErrors.length > 1
+    inputPrefix: {
+      type: String,
+    },
   }),
   { inputModel, inputErrors, inputIsValid, inputName, inputLabel, inputPlaceholder } = toRefs(props)
 </script>
@@ -80,26 +83,43 @@ import { toRefs, computed } from 'vue'
     transition: color .5s;
   }
   &-input {
+    align-items: center;
     border-radius: 4px;
     border: 1px solid;
     border-color: #7c7c7c;
     color: #434343;
-    display: block;
+    display: flex;
     font-size: 1rem;
-    outline: none;
-    padding: .5rem;
     transition: border-color .5s;
+    > input {
+      background: none;
+      border: none;
+      flex: 1 1 0;
+      font-size: 1rem;
+      outline: none;
+      padding: .5rem;
+      &::placeholder {
+        color: #a6a6a6;
+      }
+      &.field-has-prefix {
+        padding-left: 5px;
+      }
+    }
     &-errors {
       list-style: none;
       margin: 0;
       padding: 0;
     }
   }
+  &-prefix {
+    padding-left: .5rem;
+  }
 
   &-error {
     color: red;
     .field-input,
-    .field-label{
+    .field-label,
+    input {
       color: red;
     }
     .field-input {
@@ -117,7 +137,8 @@ import { toRefs, computed } from 'vue'
   &-valid {
     color: green;
     .field-input,
-    .field-label{
+    .field-label,
+    input {
       color: green;
     }
     .field-input {
