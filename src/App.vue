@@ -49,20 +49,15 @@
       pattern="\d*"
       inputName="usersCost"
       inputLabel="your cost"
-      inputPlaceholder="$4000"
+      inputPlaceholder="4,000"
+      inputPrefix="$"
       :inputModel="formStore.form.costMoneyFormat"
       :inputErrors="v$.form.cost.$errors"
       :inputIsValid="v$.form.cost.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="v$.form.cost.$touch"
-      @updatedInput="(val) => {
-        formStore.form.costMoneyFormat = val;
-        formStore.handleMoneyFieldUpdate(val, 'costMoneyFormat', 'cost')
-      }"
+      @blurredInput="v$.form.cost.$touch; handleMoneyInputBlur('costMoneyFormat', 'cost')"
+      @updatedInput="(val) => handleMoneyInputUpdate(val, 'costMoneyFormat', 'cost')"
     />
-      <!--
-        // if the formatted field has a value on load, it does not read it
-         @blurredInput="formStore.handleMoneyFieldBlur('costMoneyFormat', 'cost'); v$.form.cost.$touch" -->
     <inputField
       type="password"
       inputName="userPassword"
@@ -119,6 +114,15 @@ export default {
       },
     },
     v$ = useVuelidate(rules, formStore.form),
+    handleMoneyInputUpdate = (val, fomattedRef, numberRef) => {
+      formStore.form[fomattedRef] = val
+      formStore.handleMoneyFieldUpdate(val, fomattedRef, numberRef)
+    },
+    handleMoneyInputBlur = (fomattedRef, numberRef) => {
+      // v$.form[numberRef].value.$touch
+      // v$.form.password.$touch
+      formStore.handleMoneyFieldBlur(fomattedRef, numberRef)
+    },
     submitForm = async () => {
       const isFormValid = await v$.value.$validate()
       if (!isFormValid) {
@@ -129,7 +133,7 @@ export default {
     }
 
     v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
-    return { formStore, v$, submitForm }
+    return { formStore, v$, handleMoneyInputUpdate, handleMoneyInputBlur, submitForm }
   },
  }
 </script>
