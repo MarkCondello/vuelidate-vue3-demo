@@ -21,7 +21,6 @@
         @focus="$emit('focusedInput')"
         @blur="$emit('blurredInput')"
       >
-          <!-- class="field-input" -->
     </div>
     <ul
       class="field-input-errors"
@@ -89,6 +88,7 @@ import { toRefs, computed } from 'vue'
     border-color: #7c7c7c;
     color: #434343;
     display: flex;
+    font-family: Arial, sans-serif;
     font-size: 1rem;
     transition: border-color .5s;
     > input {
@@ -129,7 +129,8 @@ import { toRefs, computed } from 'vue'
   }
   &-input-error {
     color: red;
-    font-size: 14px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
     line-height: 1;
     padding: 8px 0;
   }
