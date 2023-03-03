@@ -55,8 +55,23 @@
       :inputErrors="v$.form.cost.$errors"
       :inputIsValid="v$.form.cost.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="v$.form.cost.$touch; handleMoneyInputBlur('costMoneyFormat', 'cost')"
+      @blurredInput="handleMoneyInputBlur('costMoneyFormat', 'cost')"
       @updatedInput="(val) => handleMoneyInputUpdate(val, 'costMoneyFormat', 'cost')"
+    />
+
+    <inputField
+      inputmode="numeric"
+      pattern="\d*"
+      inputName="usersIncome"
+      inputLabel="your income"
+      inputPlaceholder="4,123"
+      inputPrefix="$"
+      :inputModel="formStore.form.incomeMoneyFormat"
+      :inputErrors="v$.form.income.$errors"
+      :inputIsValid="v$.form.income.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
+      @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
     />
     <inputField
       type="password"
@@ -106,6 +121,10 @@ export default {
           required: helpers.withMessage('Add your cost brah', required),
           between: helpers.withMessage('your cost is out of range brah', between(1000, 500000))
         },
+        income: {
+          required: helpers.withMessage('Add your income brah', required),
+          between: helpers.withMessage('your income is out of range brah', between(1000, 200000))
+        },
         password: {
           $model: formStore.form.password,
           required,
@@ -114,13 +133,13 @@ export default {
       },
     },
     v$ = useVuelidate(rules, formStore.form),
+
     handleMoneyInputUpdate = (val, fomattedRef, numberRef) => {
       formStore.form[fomattedRef] = val
       formStore.handleMoneyFieldUpdate(val, fomattedRef, numberRef)
     },
     handleMoneyInputBlur = (fomattedRef, numberRef) => {
-      // v$.form[numberRef].value.$touch
-      // v$.form.password.$touch
+      v$.value.form[numberRef].$touch()
       formStore.handleMoneyFieldBlur(fomattedRef, numberRef)
     },
     submitForm = async () => {

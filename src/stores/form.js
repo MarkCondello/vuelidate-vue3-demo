@@ -8,36 +8,34 @@ export const useFormStore = defineStore('FormStore', {
         name: '',
         email: '',
         age: null,
-        cost: 12345, // this is what is validated
-        costMoneyFormat: '1,2345', // this is what is shown / formatted
+        cost: null, // this is what is validated
+        costMoneyFormat: '', // this is what is shown / formatted
+        income: null, // this is what is validated
+        incomeMoneyFormat: '123123123', // this is what is shown / formatted
         password: '',
-      }
+      },
+
     }
   },
   actions: {
     handleMoneyFieldUpdate(val, modelToFormat, modelToUpdate) {
       const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
+      this.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+    },
+    handleMoneyFieldBlur(modelToFormat, modelToUpdate){
+      const numberValue = Number.parseInt(Formatter.stripNonIntegers(this.form[modelToFormat]))
+      this.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+    },
+    handleMoneyFormat(numberValue, modelToFormat, modelToUpdate) {
       if (Number.isInteger(numberValue)) {
-        console.log('reached val check update')
         this.form[modelToUpdate] = numberValue
         this.form[modelToFormat] = Formatter.formatWithCommas(numberValue)
       } else {
         this.form[modelToFormat] = ''
         this.form[modelToUpdate] = 0
       }
-     console.log({val,modelToFormatState: this.form[modelToFormat], modelToUpdateState: this.form[modelToUpdate]})
     },
-    handleMoneyFieldBlur(modelToFormat, modelToUpdate){
-      const numberValue = Number.parseInt(Formatter.stripNonIntegers(this.form[modelToFormat]))
 
-      if (Number.isInteger(numberValue)) {
-        console.log('reached check for modelToFormat blur')
-        this.form[modelToUpdate] = numberValue
-      } else {
-        this.form[modelToFormat] = ''
-        this.form[modelToUpdate] = null
-      }
-    }
   },
   getters: {},
 })
