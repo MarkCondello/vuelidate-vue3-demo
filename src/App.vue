@@ -60,6 +60,7 @@
     />
 
     <inputField
+      :inputIsDisabled="true"
       inputmode="numeric"
       pattern="\d*"
       inputName="usersIncome"

@@ -4,10 +4,15 @@
     :class="{
       'field-error': inputErrors.length,
       'field-valid': inputIsValid,
+      'field-disabled': inputIsDisabled,
     }"
   >
-    <label class="field-label" :for="inputName" v-html="inputLabel" />
-    <div class="field-input">
+    <label
+      class="field-label"
+      :for="inputName"
+      v-html="inputLabel"
+    />
+    <div class="field-input" >
       <div class="field-prefix" v-if="inputPrefix">
         {{ inputPrefix }}
       </div>
@@ -17,6 +22,7 @@
         :placeholder="inputPlaceholder"
         :name="inputName"
         :value="inputModel"
+        :disabled="inputIsDisabled"
         @input="$emit('updatedInput', $event.target.value)"
         @focus="$emit('focusedInput')"
         @blur="$emit('blurredInput')"
@@ -62,11 +68,24 @@ import { toRefs, computed } from 'vue'
     inputPlaceholder: {
       type: String,
     },
+    inputIsDisabled: {
+      type: Boolean,
+      default: false,
+    },
     inputPrefix: {
       type: String,
     },
   }),
-  { inputModel, inputErrors, inputIsValid, inputName, inputLabel, inputPlaceholder } = toRefs(props)
+  {
+    inputModel,
+    inputErrors,
+    inputIsValid,
+    inputName,
+    inputLabel,
+    inputPlaceholder,
+    inputIsDisabled,
+    inputPrefix,
+  } = toRefs(props)
 </script>
 <style scoped lang="scss">
 .field {
@@ -91,6 +110,7 @@ import { toRefs, computed } from 'vue'
     font-family: Arial, sans-serif;
     font-size: 1rem;
     transition: border-color .5s;
+ 
     > input {
       background: none;
       border: none;
@@ -100,6 +120,9 @@ import { toRefs, computed } from 'vue'
       padding: .5rem;
       &::placeholder {
         color: #a6a6a6;
+      }
+      &:disabled {
+        cursor: not-allowed;
       }
       &.field-has-prefix {
         padding-left: 5px;
@@ -145,6 +168,18 @@ import { toRefs, computed } from 'vue'
     .field-input {
       color: green;
       border-color: green;
+    }
+  }
+    &-disabled {
+      .field-label {
+        color: #a6a6a6;
+      }
+      .field-input {
+        border-color: #a6a6a6;
+        color: #a6a6a6;
+        > input {
+          color: #a6a6a6;
+        }
     }
   }
 }
