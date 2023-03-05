@@ -1,14 +1,14 @@
 // import MyButton from './Button.vue';
-import InputField from '../components/InputField.vue'
+import InputField from './InputWrapper.vue'
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: 'Example/Input',
+  title: 'Example/Inputs',
   component: InputField,
   // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
   argTypes: {
     // backgroundColor: { control: 'color' },
-    onClick: { action: 'clicked' },
+    // onClick: { action: 'clicked' },
     // size: {
     //   control: { type: 'select' },
     //   options: ['small', 'medium', 'large'],
@@ -29,31 +29,43 @@ const Template = (args) => ({
 });
 
 export const TextInput = Template.bind({});
-// More on args: https://storybook.js.org/docs/vue/writing-stories/args
 TextInput.args = {
-  // type: "password",
-  inputModel: '',
+  inputType: 'text',
   inputName: "userName",
-  inputLabel: "your name",
-  inputPlaceholder: "John Doe...",
-  inputErrors: [{
-    $message: "You did it wrong man."
-  }]
+  inputLabel: "Add your name",
+  inputPlaceholder: "Joe Bloggs",
 };
 
-// export const Secondary = Template.bind({});
-// Secondary.args = {
-//   label: 'Button',
-// };
+export const EmailInput = Template.bind({});
+EmailInput.args = {
+  inputType: 'email',
+  inputName: "userEmail",
+  inputLabel: "Add your email",
+  inputPlaceholder: "Joe Bloggs",
+};
 
-// export const Large = Template.bind({});
-// Large.args = {
-//   size: 'large',
-//   label: 'Button',
-// };
+export const NumberInput = Template.bind({});
+NumberInput.args = {
+  inputType: 'number',
+  inputName: "userNumber",
+  inputLabel: "Add your age",
+  inputPlaceholder: "Joe Bloggs",
+};
 
-// export const Small = Template.bind({});
-// Small.args = {
-//   size: 'small',
-//   label: 'Button',
-// };
+export const MoneyInput = Template.bind({});
+// More on args: https://storybook.js.org/docs/vue/writing-stories/args
+MoneyInput.args = {
+  inputType: 'money',
+  inputName: "userIncome",
+  inputLabel: "Add your income",
+  inputPlaceholder: "1,234",
+  inputPrefix: "$",
+};
+
+export const PasswordInput = Template.bind({});
+PasswordInput.args = {
+  inputType: 'password',
+  inputName: "userPassword",
+  inputLabel: "Add your password",
+  inputPlaceholder: "123abc",
+};
