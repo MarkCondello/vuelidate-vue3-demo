@@ -150,21 +150,13 @@ v$ = useVuelidate(rules, formStore.form),
 handleMoneyInputUpdate = (val, modelToFormat, modelToUpdate) => {
   formStore.form[modelToFormat] = val
   const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
-  handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+  formStore.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
 },
 handleMoneyInputBlur = (modelToFormat, modelToUpdate) => {
   v$.value.form[modelToUpdate].$touch()
   const numberValue = Number.parseInt(Formatter.stripNonIntegers(formStore.form[modelToFormat]))
-  handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+  formStore.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
 },
-handleMoneyFormat = (numberValue, modelToFormat, modelToUpdate) => {
-  if (Number.isInteger(numberValue)) {
-    formStore.form[modelToUpdate] = numberValue
-    formStore.form[modelToFormat] = Formatter.formatWithCommas(numberValue)
-  } else {
-    formStore.form[modelToFormat] = ''
-    formStore.form[modelToUpdate] = 0
-  }
 }
 
 v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store

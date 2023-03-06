@@ -1,5 +1,6 @@
-// import MyButton from './Button.vue';
 import SelectAndInput from './SelectAndInputWrapper.vue'
+import '../scss/field.scss'
+
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {

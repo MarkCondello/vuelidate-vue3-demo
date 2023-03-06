@@ -1,7 +1,7 @@
 <template>
-  <fieldset class="field">
-    <label class="field-label">Your income</label>
-    <div class="select-input-wrapper">
+  <fieldset class="selectInput">
+    <label class="selectInput-label" for="usersIncome">Your income</label>
+    <div class="selectInput-wrapper">
       <inputField
         inputmode="numeric"
         pattern="\d*"
@@ -55,25 +55,17 @@ v$ = useVuelidate(rules, formStore.form),
 handleMoneyInputUpdate = (val, modelToFormat, modelToUpdate) => {
   formStore.form[modelToFormat] = val
   const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
-  handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+  formStore.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
 },
 handleMoneyInputBlur = (modelToFormat, modelToUpdate) => {
   v$.value.form[modelToUpdate].$touch()
   const numberValue = Number.parseInt(Formatter.stripNonIntegers(formStore.form[modelToFormat]))
-  handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
-},
-handleMoneyFormat = (numberValue, modelToFormat, modelToUpdate) => {
-  if (Number.isInteger(numberValue)) {
-    formStore.form[modelToUpdate] = numberValue
-    formStore.form[modelToFormat] = Formatter.formatWithCommas(numberValue)
-  } else {
-    formStore.form[modelToFormat] = ''
-    formStore.form[modelToUpdate] = 0
-  }
+  formStore.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
 },
 handleSelectChange = (val) => {
   console.log('reached handleSelectChange', val)
   formStore.form.frequency = val
+  handleMoneyInputBlur('incomeMoneyFormat', 'income')
   freqencyRange.message = helpers.withMessage(
     `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
     between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max)
@@ -83,8 +75,5 @@ handleSelectChange = (val) => {
 v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
 </script>
 <style lang="scss" scoped>
-.select-input-wrapper {
-  align-items: flex-start;
-  display: flex;
-}
+
 </style>

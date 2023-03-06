@@ -116,24 +116,6 @@ export default {
         between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max)
       )
     }),
-    // getFrequencyRange = () => {
-    //   switch(formStore.form.frequency.val) {
-    //     case 'year':
-    //       freqencyRange.message = helpers.withMessage(
-    //         `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
-    //         between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max))
-    //       break
-    //     case 'month':
-    //       freqencyRange.message = helpers.withMessage('your income is out of range for the month setting', between(5000, 10000))
-    //       break
-    //     case 'fortnight':
-    //       freqencyRange.message = helpers.withMessage('your income is out of range for the fortnight setting', between(1000, 2000))
-    //       break
-    //     case 'week':
-    //       freqencyRange.message = helpers.withMessage('your income is out of range for the week setting', between(500, 1000))
-    //       break
-    //   }
-    // },
     rules = computed(() => ({
       form: {
         name: {
@@ -177,7 +159,6 @@ export default {
     handleSelectChange = (val) => {
       console.log('reached handleSelectChange', val)
       formStore.form.frequency = val
-      // getFrequencyRange()
       freqencyRange.message = helpers.withMessage(
         `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
         between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max)
