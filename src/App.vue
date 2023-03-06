@@ -9,6 +9,26 @@
     </a>
   </div>
   <form @submit.prevent="submitForm">
+    <selectField
+      :inputOptions="frequencyOptions"
+      inputOptionLabels="frequency"
+      @updatedInput="handleSelectChange"
+      :inputValue="frequencyOptions[0]"
+    />
+    <inputField
+      inputmode="numeric"
+      pattern="\d*"
+      inputName="usersCost"
+      inputLabel="your cost"
+      inputPlaceholder="4,000"
+      inputPrefix="$"
+      :inputModel="formStore.form.costMoneyFormat"
+      :inputErrors="v$.form.cost.$errors"
+      :inputIsValid="v$.form.cost.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="handleMoneyInputBlur('costMoneyFormat', 'cost')"
+      @updatedInput="(val) => handleMoneyInputUpdate(val, 'costMoneyFormat', 'cost')"
+    />
     <inputField
       inputName="userName"
       inputLabel="your name"
@@ -44,20 +64,7 @@
       @blurredInput="v$.form.age.$touch"
       @updatedInput="(val) => (formStore.form.age = val)"
     />
-    <inputField
-      inputmode="numeric"
-      pattern="\d*"
-      inputName="usersCost"
-      inputLabel="your cost"
-      inputPlaceholder="4,000"
-      inputPrefix="$"
-      :inputModel="formStore.form.costMoneyFormat"
-      :inputErrors="v$.form.cost.$errors"
-      :inputIsValid="v$.form.cost.$invalid === false"
-      @focusedInput="v$.$reset()"
-      @blurredInput="handleMoneyInputBlur('costMoneyFormat', 'cost')"
-      @updatedInput="(val) => handleMoneyInputUpdate(val, 'costMoneyFormat', 'cost')"
-    />
+
 
     <inputField
       :inputIsDisabled="true"
@@ -98,13 +105,21 @@ import { reactive } from 'vue'
 import { useFormStore } from './stores/form'
 
 import inputField from './components/InputField.vue'
+import selectField from './components/SelectField.vue'
 
 export default {
   components: {
     inputField,
+    selectField,
   },
   setup () {
-    const formStore = useFormStore(),
+    const frequencyOptions = [
+      {frequency: 'Yearly', code: 'year'},
+      {frequency: 'Monthly', code: 'month'},
+      {frequency: 'Fortnightly', code: 'fortnight'},
+      {frequency: 'Weekly', code: 'week'},
+    ],
+    formStore = useFormStore(),
     rules = {
       form: {
         name: {
@@ -143,6 +158,9 @@ export default {
       v$.value.form[numberRef].$touch()
       formStore.handleMoneyFieldBlur(fomattedRef, numberRef)
     },
+    handleSelectChange = (val) => {
+      console.log('reached handleSelectChange', val)
+    },
     submitForm = async () => {
       const isFormValid = await v$.value.$validate()
       if (!isFormValid) {
@@ -153,7 +171,7 @@ export default {
     }
 
     v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
-    return { formStore, v$, handleMoneyInputUpdate, handleMoneyInputBlur, submitForm }
+    return { formStore, v$, frequencyOptions, handleMoneyInputUpdate, handleMoneyInputBlur, handleSelectChange, submitForm }
   },
  }
 </script>
