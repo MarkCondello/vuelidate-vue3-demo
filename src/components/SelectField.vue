@@ -1,6 +1,6 @@
 <template >
   <div class="vue-select-wrapper field">
-    <label
+    <label v-if="inputLabel"
       class="field-label field-label--theme"
     >{{ inputLabel }}</label>
     <VueMultiselect
@@ -27,7 +27,7 @@ const props = defineProps({
     type: String,
   },
   inputValue: {
-    type: Number,
+    type: Object,
     default: null,
   },
   inputLabel: {

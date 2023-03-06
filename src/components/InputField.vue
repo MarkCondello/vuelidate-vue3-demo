@@ -63,7 +63,6 @@ import { toRefs, computed } from 'vue'
     },
     inputLabel: {
       type: String,
-      required: true,
     },
     inputPlaceholder: {
       type: String,

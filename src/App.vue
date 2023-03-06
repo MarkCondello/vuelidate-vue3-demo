@@ -110,14 +110,7 @@ export default {
     selectField,
   },
   setup () {
-    const 
-    // frequencyOptions = [
-    //   {frequency: 'Yearly', code: 'year'},
-    //   {frequency: 'Monthly', code: 'month'},
-    //   {frequency: 'Fortnightly', code: 'fortnight'},
-    //   {frequency: 'Weekly', code: 'week'},
-    // ],
-    formStore = useFormStore(),
+    const formStore = useFormStore(),
     freqencyRange = reactive({ message: helpers.withMessage(
         `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
         between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max)
