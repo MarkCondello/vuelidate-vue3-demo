@@ -15,9 +15,6 @@
       :inputOptions="formStore.frequencyOptions"
       :inputValue="formStore.form.frequency"
     />
-      <!-- :inputValue="frequencyOptions[0]" -->
-      <!-- :inputOptions="frequencyOptions" -->
-
     <inputField
       inputmode="numeric"
       pattern="\d*"
@@ -32,7 +29,6 @@
       @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
       @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
     />
-
     <inputField
       inputmode="numeric"
       pattern="\d*"

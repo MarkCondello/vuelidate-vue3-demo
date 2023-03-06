@@ -156,13 +156,11 @@ import { toRefs, computed } from 'vue'
     },
   },
   v$ = useVuelidate(rules, formStore.form),
-
   handleMoneyInputUpdate = (val, modelToFormat, modelToUpdate) => {
     formStore.form[modelToFormat] = val
     const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
     handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
   },
-
   handleMoneyInputBlur = (modelToFormat, modelToUpdate) => {
     v$.value.form[modelToUpdate].$touch()
     const numberValue = Number.parseInt(Formatter.stripNonIntegers(formStore.form[modelToFormat]))
