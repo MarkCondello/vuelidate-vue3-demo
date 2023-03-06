@@ -13,10 +13,26 @@
       inputOptionLabels="frequency"
       @updatedInput="handleSelectChange"
       :inputOptions="formStore.frequencyOptions"
-      :inputValue="formStore.frequencyOptions[formStore.form.frequencySelection]"
+      :inputValue="formStore.form.frequency"
     />
       <!-- :inputValue="frequencyOptions[0]" -->
       <!-- :inputOptions="frequencyOptions" -->
+
+    <inputField
+      inputmode="numeric"
+      pattern="\d*"
+      inputName="usersIncome"
+      inputLabel="your income"
+      inputPlaceholder="4,123"
+      inputPrefix="$"
+      :inputModel="formStore.form.incomeMoneyFormat"
+      :inputErrors="v$.form.income.$errors"
+      :inputIsValid="v$.form.income.$invalid === false"
+      @focusedInput="v$.$reset()"
+      @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
+      @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
+    />
+
     <inputField
       inputmode="numeric"
       pattern="\d*"
@@ -66,23 +82,6 @@
       @blurredInput="v$.form.age.$touch"
       @updatedInput="(val) => (formStore.form.age = val)"
     />
-
-
-    <inputField
-      :inputIsDisabled="true"
-      inputmode="numeric"
-      pattern="\d*"
-      inputName="usersIncome"
-      inputLabel="your income"
-      inputPlaceholder="4,123"
-      inputPrefix="$"
-      :inputModel="formStore.form.incomeMoneyFormat"
-      :inputErrors="v$.form.income.$errors"
-      :inputIsValid="v$.form.income.$invalid === false"
-      @focusedInput="v$.$reset()"
-      @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
-      @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
-    />
     <inputField
       type="password"
       inputName="userPassword"
@@ -103,7 +102,7 @@
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength, between, helpers } from '@vuelidate/validators'
 
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import { useFormStore } from './stores/form'
 
 import inputField from './components/InputField.vue'
@@ -123,26 +122,50 @@ export default {
     //   {frequency: 'Weekly', code: 'week'},
     // ],
     formStore = useFormStore(),
-    rules = {
+    freqencyRange = reactive({ message: helpers.withMessage(
+        `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
+        between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max)
+      )
+    }),
+    // getFrequencyRange = () => {
+    //   switch(formStore.form.frequency.val) {
+    //     case 'year':
+    //       freqencyRange.message = helpers.withMessage(
+    //         `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
+    //         between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max))
+    //       break
+    //     case 'month':
+    //       freqencyRange.message = helpers.withMessage('your income is out of range for the month setting', between(5000, 10000))
+    //       break
+    //     case 'fortnight':
+    //       freqencyRange.message = helpers.withMessage('your income is out of range for the fortnight setting', between(1000, 2000))
+    //       break
+    //     case 'week':
+    //       freqencyRange.message = helpers.withMessage('your income is out of range for the week setting', between(500, 1000))
+    //       break
+    //   }
+    // },
+    rules = computed(() => ({
       form: {
         name: {
-          required: helpers.withMessage('Fill in ya name brah', required),
-        },
-        email: {
-          required: helpers.withMessage('Fill it in brah', required),
-          email: helpers.withMessage('Make it an email brah', email),
-        },
-        age: {
-          required: helpers.withMessage('Add your age brah', required),
-          between: helpers.withMessage('your age is out of range brah', between(18, 69))
-        },
-        cost: {
-          required: helpers.withMessage('Add your cost brah', required),
-          between: helpers.withMessage('your cost is out of range brah', between(1000, 500000))
+          required: helpers.withMessage('Fill in ya name', required),
         },
         income: {
-          required: helpers.withMessage('Add your income brah', required),
-          between: helpers.withMessage('your income is out of range brah', between(1000, 200000))
+          required: helpers.withMessage('Add your income', required),
+          // reference the frequency added in the formStore to set validation
+          between: freqencyRange.message,
+        },
+        email: {
+          required: helpers.withMessage('Fill it in', required),
+          email: helpers.withMessage('Make it an email', email),
+        },
+        age: {
+          required: helpers.withMessage('Add your age', required),
+          between: helpers.withMessage('your age is out of range', between(18, 69))
+        },
+        cost: {
+          required: helpers.withMessage('Add your cost', required),
+          between: helpers.withMessage('your cost is out of range', between(1000, 500000))
         },
         password: {
           $model: formStore.form.password,
@@ -150,7 +173,8 @@ export default {
           min: minLength(6)
         },
       },
-    },
+    }
+    )),
     v$ = useVuelidate(rules, formStore.form),
 
     handleMoneyInputUpdate = (val, fomattedRef, numberRef) => {
@@ -163,6 +187,12 @@ export default {
     },
     handleSelectChange = (val) => {
       console.log('reached handleSelectChange', val)
+      formStore.form.frequency = val
+      // getFrequencyRange()
+      freqencyRange.message = helpers.withMessage(
+        `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
+        between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max)
+      )
     },
     submitForm = async () => {
       const isFormValid = await v$.value.$validate()
