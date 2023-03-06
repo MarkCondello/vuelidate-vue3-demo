@@ -1,6 +1,6 @@
 <template>
   <div
-    class="field"
+    class="field field--theme"
     :class="{
       'field-error': inputErrors.length,
       'field-valid': inputIsValid,
@@ -8,7 +8,7 @@
     }"
   >
     <label
-      class="field-label"
+      class="field-label field-label--theme"
       :for="inputName"
       v-html="inputLabel"
     />
@@ -110,7 +110,6 @@ import { toRefs, computed } from 'vue'
     font-family: Arial, sans-serif;
     font-size: 1rem;
     transition: border-color .5s;
- 
     > input {
       background: none;
       border: none;
@@ -137,7 +136,6 @@ import { toRefs, computed } from 'vue'
   &-prefix {
     padding-left: .5rem;
   }
-
   &-error {
     color: red;
     .field-input,
@@ -157,7 +155,6 @@ import { toRefs, computed } from 'vue'
     line-height: 1;
     padding: 8px 0;
   }
-
   &-valid {
     color: green;
     .field-input,
@@ -170,16 +167,16 @@ import { toRefs, computed } from 'vue'
       border-color: green;
     }
   }
-    &-disabled {
-      .field-label {
+  &-disabled {
+    .field-label {
+      color: #a6a6a6;
+    }
+    .field-input {
+      border-color: #a6a6a6;
+      color: #a6a6a6;
+      > input {
         color: #a6a6a6;
       }
-      .field-input {
-        border-color: #a6a6a6;
-        color: #a6a6a6;
-        > input {
-          color: #a6a6a6;
-        }
     }
   }
 }

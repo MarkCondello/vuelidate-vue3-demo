@@ -7,6 +7,11 @@ export default {
   component: InputField,
   // More on argTypes: https://storybook.js.org/docs/vue/api/argtypes
   argTypes: {
+    inputType: {
+      table: {
+        disable: true,
+      },
+    },
     // backgroundColor: { control: 'color' },
     // onClick: { action: 'clicked' },
     // size: {
@@ -22,6 +27,10 @@ const Template = (args) => ({
   components: { InputField },
   // The story's `args` need to be mapped into the template through the `setup()` method
   setup() {
+    // const editedArgs = Object.assign({}, args)
+    // delete editedArgs.inputType
+    // console.log({editedArgs})
+
     return { args };
   },
   // And then the `args` are bound to your component with `v-bind="args"`

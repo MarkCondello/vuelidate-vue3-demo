@@ -5,6 +5,7 @@
       :inputName="inputName"
       :inputLabel="inputLabel"
       :inputPlaceholder="inputPlaceholder"
+      :inputPrefix="inputPrefix"
       :inputIsDisabled="inputIsDisabled"
 
       :inputModel="formStore.form.text"
@@ -20,6 +21,7 @@
       :inputName="inputName"
       :inputLabel="inputLabel"
       :inputPlaceholder="inputPlaceholder"
+      :inputPrefix="inputPrefix"
       :inputIsDisabled="inputIsDisabled"
 
       type="email"
@@ -36,6 +38,7 @@
       :inputName="inputName"
       :inputLabel="inputLabel"
       :inputPlaceholder="inputPlaceholder"
+      :inputPrefix="inputPrefix"
       :inputIsDisabled="inputIsDisabled"
 
       type="number"
