@@ -4,6 +4,12 @@ import Formatter from '../helpers/formatter'
 export const useFormStore = defineStore('FormStore', {
   state: () => {
     return {
+      frequencyOptions : [
+        {frequency: 'Yearly', val: 'year'},
+        {frequency: 'Monthly', val: 'month'},
+        {frequency: 'Fortnightly', val: 'fortnight'},
+        {frequency: 'Weekly', val: 'week'},
+      ],
       form: {
         name: '',
         email: '',
@@ -13,8 +19,8 @@ export const useFormStore = defineStore('FormStore', {
         income: null, // this is what is validated
         incomeMoneyFormat: '123123123', // this is what is shown / formatted
         password: '',
+        frequencySelection: 0
       },
-
     }
   },
   actions: {

@@ -10,11 +10,13 @@
   </div>
   <form @submit.prevent="submitForm">
     <selectField
-      :inputOptions="frequencyOptions"
       inputOptionLabels="frequency"
       @updatedInput="handleSelectChange"
-      :inputValue="frequencyOptions[0]"
+      :inputOptions="formStore.frequencyOptions"
+      :inputValue="formStore.frequencyOptions[formStore.form.frequencySelection]"
     />
+      <!-- :inputValue="frequencyOptions[0]" -->
+      <!-- :inputOptions="frequencyOptions" -->
     <inputField
       inputmode="numeric"
       pattern="\d*"
@@ -113,12 +115,13 @@ export default {
     selectField,
   },
   setup () {
-    const frequencyOptions = [
-      {frequency: 'Yearly', code: 'year'},
-      {frequency: 'Monthly', code: 'month'},
-      {frequency: 'Fortnightly', code: 'fortnight'},
-      {frequency: 'Weekly', code: 'week'},
-    ],
+    const 
+    // frequencyOptions = [
+    //   {frequency: 'Yearly', code: 'year'},
+    //   {frequency: 'Monthly', code: 'month'},
+    //   {frequency: 'Fortnightly', code: 'fortnight'},
+    //   {frequency: 'Weekly', code: 'week'},
+    // ],
     formStore = useFormStore(),
     rules = {
       form: {
@@ -171,7 +174,7 @@ export default {
     }
 
     v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
-    return { formStore, v$, frequencyOptions, handleMoneyInputUpdate, handleMoneyInputBlur, handleSelectChange, submitForm }
+    return { formStore, v$, handleMoneyInputUpdate, handleMoneyInputBlur, handleSelectChange, submitForm }
   },
  }
 </script>
