@@ -1,26 +1,28 @@
 <template>
-  <div class="select-and-input-wrapper">
-    <inputField
-      inputmode="numeric"
-      pattern="\d*"
-      inputName="usersIncome"
-      inputLabel="your income"
-      inputPlaceholder="4,123"
-      inputPrefix="$"
-      :inputModel="formStore.form.incomeMoneyFormat"
-      :inputErrors="v$.form.income.$errors"
-      :inputIsValid="v$.form.income.$invalid === false"
-      @focusedInput="v$.$reset()"
-      @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
-      @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
-    />
-    <selectField
-      inputOptionLabels="frequency"
-      @updatedInput="handleSelectChange"
-      :inputOptions="frequencyOptions"
-      :inputValue="formStore.form.frequency"
-    />
-  </div>
+  <fieldset class="field">
+    <label class="field-label">Your income</label>
+    <div class="select-input-wrapper">
+      <inputField
+        inputmode="numeric"
+        pattern="\d*"
+        inputName="usersIncome"
+        inputPlaceholder="4,123"
+        inputPrefix="$"
+        :inputModel="formStore.form.incomeMoneyFormat"
+        :inputErrors="v$.form.income.$errors"
+        :inputIsValid="v$.form.income.$invalid === false"
+        @focusedInput="v$.$reset()"
+        @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
+        @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
+      />
+      <selectField
+        inputOptionLabels="frequency"
+        @updatedInput="handleSelectChange"
+        :inputOptions="frequencyOptions"
+        :inputValue="formStore.form.frequency"
+      />
+    </div>
+  </fieldset>
 </template>
 <script>
 import useVuelidate from '@vuelidate/core'
@@ -134,8 +136,8 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.select-and-input-wrapper {
-  align-items: flex-end;
+.select-input-wrapper {
+  align-items: flex-start;
   display: flex;
 }
 </style>

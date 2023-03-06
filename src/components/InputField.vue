@@ -193,6 +193,4 @@ import { toRefs, computed } from 'vue'
   max-height: 0px;
   transform: translateX(15px);
 }
-
-
 </style>
