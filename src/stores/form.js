@@ -53,6 +53,8 @@ export const useFormStore = defineStore('FormStore', {
         incomeMoneyFormat: '123123123', // this is what is shown / formatted
         password: '',
         frequency:  frequencies[0],
+        optIn: null,
+        options: [],
       },
     }
   },

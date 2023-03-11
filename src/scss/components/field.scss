@@ -1,10 +1,5 @@
-@mixin label(){
-  display: block;
-  font-family: "Roboto Slab",georgia,serif;
-  font-weight: 700;
-  margin-bottom: .25rem;
-  transition: color .5s;
-}
+@use '../globals/palette.scss' as *;
+@use '../globals/mixins.scss' as *;
 
 .field {
   border: none;
@@ -20,8 +15,8 @@
     align-items: center;
     border-radius: 4px;
     border: 1px solid;
-    border-color: #7c7c7c;
-    color: #434343;
+    border-color: map-get($palette, 'l-gray');
+    color: map-get($palette, 'd-gray');
     display: flex;
     font-family: Arial, sans-serif;
     font-size: 1rem;
@@ -34,7 +29,7 @@
       outline: none;
       padding: .5rem;
       &::placeholder {
-        color: #a6a6a6;
+        color: map-get($palette, 'disabled');
       }
       &:disabled {
         cursor: not-allowed;
@@ -47,64 +42,57 @@
       list-style: none;
       margin: 0;
       padding: 0;
+      li {
+        &:first-of-type {
+          margin: 10px 0 0;
+        }
+      }
     }
   }
   &-prefix {
     padding-left: .5rem;
   }
   &-error {
-    color: red;
+    color: map-get($palette, 'danger');
     .field-input,
     .field-label,
     input {
-      color: red;
+      color: map-get($palette, 'danger');
     }
     .field-input {
-      color: red;
-      border-color: red;
+      color: map-get($palette, 'danger');
+      border-color: map-get($palette, 'danger');
     }
   }
   &-input-error {
-    color: red;
+    color: map-get($palette, 'danger');
     font-family: Arial, sans-serif;
     font-size: 13px;
     line-height: 1;
-    padding: 8px 0;
+    padding: 0 0 8px 0;
   }
   &-valid {
-    color: green;
+    color: map-get($palette, 'success');
     .field-input,
     .field-label,
     input {
-      color: green;
+      color: map-get($palette, 'success');
     }
     .field-input {
-      color: green;
-      border-color: green;
+      color: map-get($palette, 'success');
+      border-color: map-get($palette, 'success');
     }
   }
   &-disabled {
     .field-label {
-      color: #a6a6a6;
+      color: map-get($palette, 'disabled');
     }
     .field-input {
-      border-color: #a6a6a6;
-      color: #a6a6a6;
+      border-color: map-get($palette, 'disabled');
+      color: map-get($palette, 'disabled');
       > input {
-        color: #a6a6a6;
+        color: map-get($palette, 'disabled');
       }
     }
-  }
-}
-.selectInput {
-  border: none;
-  padding: 0;
-  margin: 0;
-  &-label {
-    @include label;
-  }
-  &-wrapper {
-    align-items: flex-start;
-    display: flex;
   }
 }

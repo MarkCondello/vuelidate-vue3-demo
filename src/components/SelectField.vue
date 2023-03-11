@@ -1,7 +1,7 @@
 <template >
   <div class="vue-select-wrapper field">
     <label v-if="inputLabel"
-      class="field-label field-label--theme"
+      class="field-label"
     >{{ inputLabel }}</label>
     <VueMultiselect
       :track-by="inputOptionLabels"
@@ -42,17 +42,17 @@ const value = ref(props.inputValue)
   .vue-select-wrapper {
     margin-bottom: 1rem;
   }
-  .field {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-    width: 100%;
-    &-label {
-      display: block;
-      font-family: "Roboto Slab",georgia,serif;
-      font-weight: 700;
-      margin-bottom: .25rem;
-      transition: color .5s;
-    }
-  }
+  // .field {
+  //   display: flex;
+  //   flex-direction: column;
+  //   margin-bottom: 1rem;
+  //   width: 100%;
+  //   &-label {
+  //     display: block;
+  //     font-family: "Roboto Slab",georgia,serif;
+  //     font-weight: 700;
+  //     margin-bottom: .25rem;
+  //     transition: color .5s;
+  //   }
+  // }
 </style>

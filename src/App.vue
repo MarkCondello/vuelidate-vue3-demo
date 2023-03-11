@@ -10,10 +10,11 @@
   </div>
   <form @submit.prevent="submitForm">
     <selectField
+      inputLabel="Frequency"
       inputOptionLabels="frequency"
-      @updatedInput="handleSelectChange"
       :inputOptions="formStore.frequencyOptions"
       :inputValue="formStore.form.frequency"
+      @updatedInput="handleFrequencySelectChange"
     />
     <inputField
       inputmode="numeric"
@@ -89,8 +90,59 @@
       @blurredInput="v$.form.password.$touch"
       @updatedInput="(val) => (formStore.form.password= val)"
     />
+      <!-- :inputIsDisabled="true" -->
+    <p>Opt in</p>
+    <CheckboxRadio
+      optionName="optIn"
+      optionValue="yes"
+      optionLabel="Yeah"
+      :optionSelected="formStore.form.optIn === 'yes'"
+      :inputErrors="v$.form.optIn.$errors"
+      :inputIsValid="v$.form.optIn.$invalid === false"
+      @clickedOption="formStore.form.optIn = 'yes'"
+    />
+    <CheckboxRadio
+      optionName="optIn"
+      optionValue="no"
+      optionLabel="Nah"
+      :optionSelected="formStore.form.optIn === 'no'"
+      :inputErrors="v$.form.optIn.$errors"
+      :inputIsValid="v$.form.optIn.$invalid === false"
+      @clickedOption="formStore.form.optIn = 'no'"
+    />
+    <p>Options</p>
+    <CheckboxRadio
+      optionName="options"
+      optionType="checkbox"
+      optionValue="low"
+      optionLabel="Low"
+      :optionSelected="formStore.form.options.includes('low')"
+      @clickedOption="(val) => handleOptionSelection(val)"
+    />
+      <!-- :inputErrors="v$.form.options.$errors"
+      :inputIsValid="v$.form.options.$invalid === false" -->
+    <CheckboxRadio
+      optionName="options"
+      optionType="checkbox"
+      optionValue="medium"
+      optionLabel="Medium"
+      :optionSelected="formStore.form.options.includes('medium')"
+
+      @clickedOption="(val) => handleOptionSelection(val)"
+    />
+      <CheckboxRadio
+      optionName="options"
+      optionType="checkbox"
+      optionValue="high"
+      optionLabel="high"
+      :optionSelected="formStore.form.options.includes('high')"
+
+      @clickedOption="(val) => handleOptionSelection(val)"
+    />
+ 
     <div class="buttons-w">
       <button :disabled="v$.form.$invalid" class="btn btn-primary">Login</button>
+      <!-- <button class="btn btn-primary">Login</button> -->
     </div>
   </form>
 </template>
@@ -103,11 +155,13 @@ import { useFormStore } from './stores/form'
 
 import inputField from './components/InputField.vue'
 import selectField from './components/SelectField.vue'
+import CheckboxRadio from './components/CheckBoxRadio.vue'
 
 export default {
   components: {
     inputField,
     selectField,
+    CheckboxRadio,
   },
   setup () {
     const formStore = useFormStore(),
@@ -143,6 +197,9 @@ export default {
           required,
           min: minLength(6)
         },
+        optIn: {
+          required: helpers.withMessage('Add an optIn choice yo', required),
+        }
       },
     }
     )),
@@ -156,13 +213,23 @@ export default {
       v$.value.form[numberRef].$touch()
       formStore.handleMoneyFieldBlur(fomattedRef, numberRef)
     },
-    handleSelectChange = (val) => {
+    handleFrequencySelectChange = (val) => {
       console.log('reached handleSelectChange', val)
       formStore.form.frequency = val
+      handleMoneyInputBlur('incomeMoneyFormat', 'income')
+
       freqencyRange.message = helpers.withMessage(
         `${formStore.form.frequency.validation.message} (min: ${formStore.form.frequency.validation.min} max: ${formStore.form.frequency.validation.max})`, 
         between(formStore.form.frequency.validation.min, formStore.form.frequency.validation.max)
       )
+    },
+    handleOptionSelection = (val) => {
+      if (formStore.form.options.includes(val)) {
+        const filteredOptions = formStore.form.options.filter(option => option !== val)
+        formStore.form.options = filteredOptions
+      } else {
+        formStore.form.options.push(val)
+      }
     },
     submitForm = async () => {
       const isFormValid = await v$.value.$validate()
@@ -174,7 +241,7 @@ export default {
     }
 
     v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
-    return { formStore, v$, handleMoneyInputUpdate, handleMoneyInputBlur, handleSelectChange, submitForm }
+    return { formStore, v$, handleMoneyInputUpdate, handleMoneyInputBlur, handleFrequencySelectChange, handleOptionSelection, submitForm }
   },
  }
 </script>
