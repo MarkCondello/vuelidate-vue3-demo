@@ -39,12 +39,11 @@ import { toRefs, computed } from 'vue'
     },
     inputErrors: {
       type: Array,
-      default: []
+      default: () => []
     },
     inputIsValid: {
       type: Boolean,
     },
-
     optionLabel: {
       type: String,
     },

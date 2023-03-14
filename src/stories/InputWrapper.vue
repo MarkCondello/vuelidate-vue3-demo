@@ -156,7 +156,6 @@ handleMoneyInputBlur = (modelToFormat, modelToUpdate) => {
   v$.value.form[modelToUpdate].$touch()
   const numberValue = Number.parseInt(Formatter.stripNonIntegers(formStore.form[modelToFormat]))
   formStore.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
-},
 }
 
 v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store

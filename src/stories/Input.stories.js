@@ -1,5 +1,5 @@
-import InputField from './InputWrapper.vue'
-import '../scss/field.scss'
+import InputField from './InputWrapper.vue';
+import '../scss/components/field.scss';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
