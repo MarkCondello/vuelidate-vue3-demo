@@ -1,18 +1,24 @@
 <template>
    <p>Opt in</p>
    <checkboxRadio
-      optionName="optIn"
+      :optionLabel="firstOptionLabel"
+      :inputIsDisabled="firstInputIsDisabled"
+      
+      optionName="choices"
       optionValue="yes"
-      optionLabel="Yeah"
+
       :optionSelected="formStore.form.optIn === 'yes'"
       :inputErrors="v$.form.optIn.$errors"
       :inputIsValid="v$.form.optIn.$invalid === false"
       @clickedOption="formStore.form.optIn = 'yes'"
     />
     <checkboxRadio
-      optionName="optIn"
+      :optionLabel="secondOptionLabel"
+      :inputIsDisabled="secondInputIsDisabled"
+      
+      optionName="choices"
       optionValue="no"
-      optionLabel="Nah"
+
       :optionSelected="formStore.form.optIn === 'no'"
       :inputErrors="v$.form.optIn.$errors"
       :inputIsValid="v$.form.optIn.$invalid === false"
@@ -24,10 +30,35 @@
 import useVuelidate from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
 
-import { reactive, computed } from 'vue'
+import { reactive, computed, toRefs } from 'vue'
 import { useFormStore } from '../stores/form'
 
 import checkboxRadio from '../components/CheckBoxRadio.vue'
+const props = defineProps({
+ 
+  firstOptionLabel: {
+    type: String,
+    default: "Yeah"
+  },
+  firstInputIsDisabled: {
+    type: Boolean,
+    default: false,
+  },
+  secondOptionLabel: {
+    type: String,
+    default: "Nah"
+  },
+  secondInputIsDisabled: {
+    type: Boolean,
+    default: false,
+},
+}),
+{
+  firstOptionLabel,
+  firstInputIsDisabled,
+  secondOptionLabel,
+  secondInputIsDisabled,
+} = toRefs(props)
 
 const formStore = useFormStore(),
   rules = computed(() => ({

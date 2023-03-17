@@ -59,7 +59,6 @@ import { toRefs, computed } from 'vue'
     optionName,
     optionLabel,
     inputIsDisabled,
-
   } = toRefs(props)
 </script>
 
