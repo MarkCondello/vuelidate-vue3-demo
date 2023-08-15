@@ -42,7 +42,7 @@ const frequencies = [
 export const useFormStore = defineStore('FormStore', {
   state: () => {
     return {
-      frequencyOptions : frequencies,
+      frequencyOptions: frequencies,
       form: {
         name: '',
         email: '',
@@ -52,7 +52,7 @@ export const useFormStore = defineStore('FormStore', {
         income: null, // this is what is validated
         incomeMoneyFormat: '123123123', // this is what is shown / formatted
         password: '',
-        frequency:  frequencies[0],
+        frequency: frequencies[0],
         optIn: null,
         options: [],
       },

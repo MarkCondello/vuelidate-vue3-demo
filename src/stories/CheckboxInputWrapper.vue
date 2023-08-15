@@ -15,7 +15,7 @@
       @clickedOption="(val) => handleOptionSelection(val)"
     />
     <checkboxRadio
-    optionType="checkbox"
+      optionType="checkbox"
       :optionLabel="secondOptionLabel"
       :inputIsDisabled="secondInputIsDisabled"
       
