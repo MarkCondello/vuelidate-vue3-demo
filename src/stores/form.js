@@ -50,7 +50,7 @@ export const useFormStore = defineStore('FormStore', {
         cost: null, // this is what is validated
         costMoneyFormat: '', // this is what is shown / formatted
         income: null, // this is what is validated
-        incomeMoneyFormat: '123123123', // this is what is shown / formatted
+        incomeMoneyFormat: '123,123,123', // this is what is shown / formatted
         password: '',
         frequency: frequencies[0],
         optIn: null,
@@ -59,23 +59,49 @@ export const useFormStore = defineStore('FormStore', {
     }
   },
   actions: {
-    handleMoneyFieldUpdate(val, modelToFormat, modelToUpdate) {
-      const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
-      this.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
-    },
-    handleMoneyFieldBlur(modelToFormat, modelToUpdate){
-      const numberValue = Number.parseInt(Formatter.stripNonIntegers(this.form[modelToFormat]))
-      this.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
-    },
-    handleMoneyFormat(numberValue, modelToFormat, modelToUpdate) {
-      if (Number.isInteger(numberValue)) {
-        this.form[modelToUpdate] = numberValue
-        this.form[modelToFormat] = Formatter.formatWithCommas(numberValue)
+    handlePercentFieldUpdate(modelToFormat, modelToUpdate, parentModel = 'form', decimals = 0){
+      let numberValue = Number.parseInt(Formatter.stripNonIntegers(this[parentModel][modelToFormat]))
+      if (decimals) {
+        numberValue = Number.parseFloat(Formatter.stripNonIntegers(this[parentModel][modelToFormat]))
+      }
+      if (TypeChecker.isFloat(numberValue) || TypeChecker.isInt(numberValue)) {
+        this[parentModel][modelToFormat] = Formatter.formatToDecimal(numberValue, decimals)
+        this[parentModel][modelToUpdate] = numberValue
       } else {
-        this.form[modelToFormat] = ''
-        this.form[modelToUpdate] = 0
+        this[parentModel][modelToFormat] = ''
+        this[parentModel][modelToUpdate] = null
       }
     },
+    handleMoneyFieldUpdate(modelToFormat, modelToUpdate, parentModel = 'form', decimals = 0){
+      let numberValue = Number.parseInt(Formatter.stripNonIntegers(this[parentModel][modelToFormat]))
+      if (decimals) {
+        numberValue = Number.parseFloat(Formatter.stripNonIntegers(this[parentModel][modelToFormat]))
+      }
+      if (TypeChecker.isFloat(numberValue) || TypeChecker.isInt(numberValue)) {
+        this[parentModel][modelToFormat] = Formatter.formatWithCommas(numberValue, decimals)
+        this[parentModel][modelToUpdate] = numberValue
+      } else {
+        this[parentModel][modelToFormat] = ''
+        this[parentModel][modelToUpdate] = null
+      }
+    },
+    // handleMoneyFieldUpdate(val, modelToFormat, modelToUpdate) {
+    //   const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
+    //   this.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+    // },
+    // handleMoneyFieldBlur(modelToFormat, modelToUpdate){
+    //   const numberValue = Number.parseInt(Formatter.stripNonIntegers(this.form[modelToFormat]))
+    //   this.handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+    // },
+    // handleMoneyFormat(numberValue, modelToFormat, modelToUpdate) {
+    //   if (Number.isInteger(numberValue)) {
+    //     this.form[modelToUpdate] = numberValue
+    //     this.form[modelToFormat] = Formatter.formatWithCommas(numberValue)
+    //   } else {
+    //     this.form[modelToFormat] = ''
+    //     this.form[modelToUpdate] = 0
+    //   }
+    // },
 
   },
   getters: {},

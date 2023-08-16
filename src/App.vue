@@ -27,8 +27,10 @@
       :inputErrors="v$.form.income.$errors"
       :inputIsValid="v$.form.income.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
-      @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
+      @blurredInput="handleMoneyInput('incomeMoneyFormat', 'income')"
+      @keyTabPressedInput="handleMoneyInput('incomeMoneyFormat', 'income', true)"
+
+      @updatedInput="(val) => (formStore.form.incomeMoneyFormat = val)"
     />
     <inputField
       inputmode="numeric"
@@ -41,8 +43,10 @@
       :inputErrors="v$.form.cost.$errors"
       :inputIsValid="v$.form.cost.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="handleMoneyInputBlur('costMoneyFormat', 'cost')"
-      @updatedInput="(val) => handleMoneyInputUpdate(val, 'costMoneyFormat', 'cost')"
+      @blurredInput="handleMoneyInput('costMoneyFormat', 'cost')"
+      @keyTabPressedInput="(val) => handleMoneyInput(val, 'costMoneyFormat', 'cost')"
+      @updatedInput="(val) => (formStore.form.costMoneyFormat = val)"
+
     />
     <inputField
       inputName="userName"
@@ -205,14 +209,38 @@ export default {
     )),
     v$ = useVuelidate(rules, formStore.form),
 
-    handleMoneyInputUpdate = (val, fomattedRef, numberRef) => {
-      formStore.form[fomattedRef] = val
-      formStore.handleMoneyFieldUpdate(val, fomattedRef, numberRef)
+
+		handleNumberInput = (fomattedRef, numberRef, includeTimeout = false) => {
+			const timeoutValue = includeTimeout ? 100 : 0
+			setTimeout(()=> { // The timeout is used for tabbing out of a field. Vuelidate does not pick up the event properly and so a timeout ensures that it runs on the correct property
+				formStore.handlePercentFieldUpdates(fomattedRef, numberRef, 'consumerDisplay', 0)
+				v$.value[numberRef].$touch()
+				console.log('Reached handleNumberInput for ', numberRef, ' after ', timeoutValue)
+			}, timeoutValue)
+		},
+    handlePercentInput = (fomattedRef, numberRef, decimals = 1, includeTimeout = false) => {
+			const timeoutValue = includeTimeout ? 100 : 0
+			setTimeout(()=> { // The timeout is used for tabbing out of a field. Vuelidate does not pick up the event properly and so a timeout ensures that it runs on the correct property
+				formStore.handlePercentFieldUpdates(fomattedRef, numberRef, 'consumerDisplay', decimals)
+				v$.value[numberRef].$touch()
+			}, timeoutValue)
     },
-    handleMoneyInputBlur = (fomattedRef, numberRef) => {
-      v$.value.form[numberRef].$touch()
-      formStore.handleMoneyFieldBlur(fomattedRef, numberRef)
+    handleMoneyInput = (fomattedRef, numberRef, includeTimeout = false) => {
+      const timeoutValue = includeTimeout ? 100 : 0
+       setTimeout(()=> { // The timeout is used for tabbing out of a field. Vuelidate does not pick up the event properly and so a timeout ensures that it runs on the correct property
+        formStore.handleMoneyFieldUpdates(fomattedRef, numberRef, 'consumerDisplay', 0)
+        v$.value[numberRef].$touch()
+      }, timeoutValue)
     },
+
+    // handleMoneyInputUpdate = (val, fomattedRef, numberRef) => {
+    //   formStore.form[fomattedRef] = val
+    //   formStore.handleMoneyFieldUpdate(val, fomattedRef, numberRef)
+    // },
+    // handleMoneyInputBlur = (fomattedRef, numberRef) => {
+    //   v$.value.form[numberRef].$touch()
+    //   formStore.handleMoneyFieldBlur(fomattedRef, numberRef)
+    // },
     handleFrequencySelectChange = (val) => {
       console.log('reached handleSelectChange', val)
       formStore.form.frequency = val
@@ -241,7 +269,7 @@ export default {
     }
 
     v$.value.form.$model = formStore.form // this is needed to set the model for vuelidate with the store
-    return { formStore, v$, handleMoneyInputUpdate, handleMoneyInputBlur, handleFrequencySelectChange, handleOptionSelection, submitForm }
+    return { formStore, v$, handleMoneyInput, handleFrequencySelectChange, handleOptionSelection, submitForm }
   },
  }
 </script>

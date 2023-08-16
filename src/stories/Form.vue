@@ -36,6 +36,7 @@
       @updatedInput="(val) => (formStore.form.age = val)"
     />
     <inputField
+      type="text"
       inputmode="numeric"
       pattern="\d*"
       inputName="usersCost"
@@ -46,10 +47,13 @@
       :inputErrors="v$.form.cost.$errors"
       :inputIsValid="v$.form.cost.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="handleMoneyInputBlur('costMoneyFormat', 'cost')"
-      @updatedInput="(val) => handleMoneyInputUpdate(val, 'costMoneyFormat', 'cost')"
+      @blurredInput="handleMoneyInput('costMoneyFormat', 'cost')"
+      @keyTabPressedInput="handleMoneyInput('costMoneyFormat', 'cost', true)"
+
+      @updatedInput="(val) => (formStore.form.incomeMoneyFormat = val)"
     />
     <inputField
+      type="text"
       inputmode="numeric"
       pattern="\d*"
       inputName="usersIncome"
@@ -60,8 +64,10 @@
       :inputErrors="v$.form.income.$errors"
       :inputIsValid="v$.form.income.$invalid === false"
       @focusedInput="v$.$reset()"
-      @blurredInput="handleMoneyInputBlur('incomeMoneyFormat', 'income')"
-      @updatedInput="(val) => handleMoneyInputUpdate(val, 'incomeMoneyFormat', 'income')"
+      @blurredInput="handleMoneyInput('incomeMoneyFormat', 'income')"
+      @keyTabPressedInput="handleMoneyInput('incomeMoneyFormat', 'income', true)"
+
+      @updatedInput="(val) => (formStore.form.incomeMoneyFormat = val)"
     />
     <inputField
       type="password"
@@ -136,28 +142,50 @@ export default {
     },
     v$ = useVuelidate(rules, formStore.form),
 
-    handleMoneyInputUpdate = (val, modelToFormat, modelToUpdate) => {
-      formStore.form[modelToFormat] = val
-      // formStore.handleMoneyFieldUpdate(val, fomattedRef, numberRef)
-      const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
-      handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+
+		handleNumberInput = (fomattedRef, numberRef, includeTimeout = false) => {
+			const timeoutValue = includeTimeout ? 100 : 0
+			setTimeout(()=> { // The timeout is used for tabbing out of a field. Vuelidate does not pick up the event properly and so a timeout ensures that it runs on the correct property
+				formStore.handlePercentFieldUpdates(fomattedRef, numberRef)
+				v$.value[numberRef].$touch()
+				console.log('Reached handleNumberInput for ', numberRef, ' after ', timeoutValue)
+			}, timeoutValue)
+		},
+    handlePercentInput = (fomattedRef, numberRef, decimals = 1, includeTimeout = false) => {
+			const timeoutValue = includeTimeout ? 100 : 0
+			setTimeout(()=> { // The timeout is used for tabbing out of a field. Vuelidate does not pick up the event properly and so a timeout ensures that it runs on the correct property
+				formStore.handlePercentFieldUpdates(fomattedRef, numberRef, 'form', decimals)
+				v$.value[numberRef].$touch()
+			}, timeoutValue)
+    },
+    handleMoneyInput = (fomattedRef, numberRef, includeTimeout = false) => {
+      const timeoutValue = includeTimeout ? 100 : 0
+       setTimeout(()=> { // The timeout is used for tabbing out of a field. Vuelidate does not pick up the event properly and so a timeout ensures that it runs on the correct property
+        formStore.handleMoneyFieldUpdates(fomattedRef, numberRef, 'form', 0)
+        v$.value[numberRef].$touch()
+      }, timeoutValue)
     },
 
-    handleMoneyInputBlur = (modelToFormat, modelToUpdate) => {
-      v$.value.form[modelToUpdate].$touch()
-      const numberValue = Number.parseInt(Formatter.stripNonIntegers(formStore.form[modelToFormat]))
-      handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
-      // formStore.handleMoneyFieldBlur(fomattedRef, numberRef)
-    },
-    handleMoneyFormat = (numberValue, modelToFormat, modelToUpdate) => {
-      if (Number.isInteger(numberValue)) {
-        formStore.form[modelToUpdate] = numberValue
-        formStore.form[modelToFormat] = Formatter.formatWithCommas(numberValue)
-      } else {
-        formStore.form[modelToFormat] = ''
-        formStore.form[modelToUpdate] = 0
-      }
-    },
+    // handleMoneyInputUpdate = (val, modelToFormat, modelToUpdate) => {
+    //   formStore.form[modelToFormat] = val
+    //   const numberValue = Number.parseInt(Formatter.stripNonIntegers(val))
+    //   handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+    // },
+
+    // handleMoneyInputBlur = (modelToFormat, modelToUpdate) => {
+    //   v$.value.form[modelToUpdate].$touch()
+    //   const numberValue = Number.parseInt(Formatter.stripNonIntegers(formStore.form[modelToFormat]))
+    //   handleMoneyFormat(numberValue, modelToFormat, modelToUpdate)
+    // },
+    // handleMoneyFormat = (numberValue, modelToFormat, modelToUpdate) => {
+    //   if (Number.isInteger(numberValue)) {
+    //     formStore.form[modelToUpdate] = numberValue
+    //     formStore.form[modelToFormat] = Formatter.formatWithCommas(numberValue)
+    //   } else {
+    //     formStore.form[modelToFormat] = ''
+    //     formStore.form[modelToUpdate] = 0
+    //   }
+    // },
     submitForm = async () => {
       const isFormValid = await v$.value.$validate()
       if (!isFormValid) {
