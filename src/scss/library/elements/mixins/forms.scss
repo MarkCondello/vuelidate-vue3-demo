@@ -1,0 +1,149 @@
+@use '../'as *;
+@use '../../layouts.scss' as *;
+@mixin input-common($input-border: 1px solid, $radius: 4px, $padding: 1rem, $placeholder-color: map-get($base-palette, 'medium-gray'), $bg: transparent) {
+	background-color: $bg;
+	border: $input-border;
+	border-radius: $radius;
+	padding: 0.75rem;
+	transition: border-color 1s;
+	width: 100%;
+
+	&::placeholder,
+	&[disabled] {
+		color: $placeholder-color;
+	}
+
+	&[disabled] {
+		cursor: not-allowed;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}
+@mixin forms($form-error: map-get($base-palette, 'danger')) {
+	> fieldset > div,
+	> div {
+		margin-bottom: 1rem;
+		position: relative;
+
+		input,
+		label,
+		small {
+			display: block;
+		}
+
+		label,
+		small {
+			transition: color 1s;
+		}
+
+		small {
+			margin-top: 0.25rem;
+		}
+
+		&.form-error {
+			label,
+			small {
+				color: $form-error;
+			}
+
+			input {
+				border-color: $form-error;
+			}
+		}
+
+		&.search-input {
+			position: relative;
+
+			label {
+				display: none;
+			}
+
+			button {
+				@include reset-btn;
+				height: 100%;
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 40px;
+
+				svg {
+					width: 10px;
+				}
+			}
+		}
+	}
+
+	.select-filter-input {
+		display: inline-flex;
+		flex-direction: column;
+		position: relative;
+
+		> div {
+			@include align-center;
+			background-color: map-get($base-palette, "light-gray");
+			border-radius: 4px;
+			padding: 0.75rem;
+
+			label {
+				line-height: 1;
+				margin-right: 5px;
+			}
+
+			> span {
+				font-weight: 600;
+				line-height: 1;
+				margin-right: 3rem;
+			}
+
+			button {
+				@include reset-btn;
+				height: 100%;
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 40px;
+
+				i,
+				span,
+				svg {
+					transition: transform 0.3s;
+					width: 10px;
+				}
+
+				&.open {
+					i,
+					span,
+					svg {
+						transform: rotate(180deg);
+					}
+				}
+			}
+		}
+
+		ul {
+			@include dropdown;
+			left: 0;
+			top: 46px;
+			width: 100%;
+
+			li button {
+				@include reset-btn;
+				font-size: 14px;
+				text-align: left;
+				padding: 0.5rem 0.75rem;
+			}
+
+			&.open {
+				height: auto;
+				opacity: 1;
+				padding: 0.25rem 0;
+			}
+		}
+	}
+
+	> footer {
+		@include space-between-center;
+	}
+}

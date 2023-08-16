@@ -1,0 +1,68 @@
+@use './palette.scss' as *;
+
+// color variables
+$bg-0: map-get($palette, "blackest");
+$bg-1: map-get($palette, "whitest");
+$bg-2: map-get($palette, "secondary");
+$bg-3: map-get($palette, "cta");
+
+$text-0: map-get($palette, "blackest");
+$text-1: map-get($palette, "primary");
+
+$white: map-get($palette, 'whitest');
+$black: map-get($palette, "whitest");
+
+$l-gray: map-get($palette, 'l-gray');
+$m-gray: map-get($palette, 'md-gray');
+$d-gray: map-get($palette, 'd-gray');
+
+$primary: map-get($palette, 'primary');
+$secondary: map-get($palette, 'secondary');
+
+$success: map-get($palette, "success");
+$warning: map-get($palette, "warning");
+$error: map-get($palette, 'danger');
+
+$disabled: map-get($palette, 'disabled');
+$cta: map-get($palette, 'cta');
+
+// checkbox radio settings
+$checkboxBorderSize: 1px;
+$checkboxPadding: 2px;
+$checkboxSize: 24px;
+
+$input-borders: $cta;
+
+//button settings start
+$clickable-f-size: 17px;
+$button-border-radius: 55px;
+$button-padding: 8px 28px 9px;
+$button-hollow-padding: 9px 10px 10px;
+$base-buttons: (
+	color: $text-0,
+	hover-color: $text-0,
+	bg-color: $primary,
+	bg-change: "shade",
+	intesity: 15%,
+	bg-hover: $primary,
+	focus-bg-color: $primary,
+	focus-border-color: $primary,
+	focus-color: $text-0,
+);
+$base-hollow-buttons: (
+	color: $primary,
+	hover-color: $text-0,
+	bg-change: "shade",
+	bg-hover: "",
+	focus-border-color: $secondary
+);
+//button settings end
+
+$breakpoints: (
+	sm: 320px,
+	md: 764px,
+	lg: 1024px,
+	xl: 1080px,
+	xxl: 1920px
+)
+!default;

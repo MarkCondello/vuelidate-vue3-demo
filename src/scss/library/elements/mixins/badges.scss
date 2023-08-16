@@ -1,0 +1,22 @@
+@mixin badges($size: 10px, $l-height: 1.5) {
+    border-radius: 50%;
+    height: $size;
+    width: $size;
+    &.meta {
+        color: #fff;
+        font-size: calc($size - 8px);
+        height: $size;
+        line-height: $l-height;
+        text-align: center;
+        width: $size;
+    }
+    &.box {
+        border-radius: 4px;
+        font-size: 14px;
+        height: 22px;
+        line-height: 1.65;
+        margin: 1px;
+        text-align: center;
+        width: 22px;
+    }
+}

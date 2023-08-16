@@ -30,6 +30,7 @@
     "sass": "^1.58.3",
     "vite": "^4.1.0",
     "vue-loader": "^16.8.3",
-    "vue-multiselect": "3.0.0-alpha.2"
+    "vue-multiselect": "3.0.0-alpha.2",
+    "vue-smooth-reflow": "^0.1.12"
   }
 }

@@ -33,7 +33,7 @@ import { required, helpers } from '@vuelidate/validators'
 import { reactive, computed, toRefs } from 'vue'
 import { useFormStore } from '../stores/form'
 
-import checkboxRadio from '../components/CheckBoxRadio.vue'
+import checkboxRadio from '../components/FormElements/CheckBoxRadio.vue'
 const props = defineProps({
  
   firstOptionLabel: {

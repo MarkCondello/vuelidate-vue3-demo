@@ -1,0 +1,16 @@
+<svg width="7.72994185px" height="5.43797514px" viewBox="0 0 7.72994185 5.43797514" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Triangle</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-561.135, -436)" fill="#000000">
+            <g transform="translate(180, 79)">
+                <g transform="translate(35, 100)">
+                    <g transform="translate(0, 238)">
+                        <g transform="translate(341, 12)">
+                            <path d="M9.76822128,7.92186554 L12.6331797,11.3598156 C12.9867437,11.7840925 12.9294197,12.4146572 12.5051428,12.7682213 C12.3254278,12.9179838 12.0988949,13 11.8649584,13 L6.13504161,13 C5.58275686,13 5.13504161,12.5522847 5.13504161,12 C5.13504161,11.7660635 5.21705783,11.5395306 5.36682033,11.3598156 L8.23177872,7.92186554 C8.5853428,7.49758864 9.2159075,7.44026457 9.6401844,7.79382866 C9.68664746,7.83254788 9.72950206,7.87540247 9.76822128,7.92186554 Z" transform="translate(9, 10) scale(1, -1) translate(-9, -10)"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

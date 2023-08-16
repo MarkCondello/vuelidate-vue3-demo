@@ -87,7 +87,7 @@ import { reactive } from 'vue'
 // import { useFormStore } from '../stores/form'
 
 import Formatter from '../helpers/formatter.js'
-import inputField from '../components/InputField.vue'
+import inputField from '../components/FormElements/InputField.vue'
 
 export default {
   components: {

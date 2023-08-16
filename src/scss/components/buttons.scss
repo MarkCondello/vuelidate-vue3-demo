@@ -1,0 +1,64 @@
+@use '@/base.scss' as *;
+@use '@/breakpoints.scss' as *;
+@use '@/elements/mixins/buttons.scss' as *;
+@use '@/elements/helpers.scss' as *;
+@use '../config/variables.scss' as *;
+@use '../config/typography.scss' as *;
+
+
+	// @mixin button-settings($fweight: 500){
+	// 	font-weight: $fweight;
+	// 	max-width: 160px;
+	// 	text-align: center;
+	// 	text-decoration: none;
+	// 	width: 100%;
+	// 	&:focus {
+	// 		text-decoration: underline;
+	// 	}
+	// 	@include media-breakpoint-down(lg, $breakpoints) {
+	// 		font-size: 15px;
+	// 		max-width: 120px;
+	// 		// padding-bottom: 4px;
+	// 		// padding-top: 3px;
+	// 	}
+	// }
+	.sgy-button {
+		@include button-base($button-border-radius, $clickable-f-size, $button-padding);
+		@include button-common-states(map-values($base-buttons)...);
+		// @include button-settings;
+		&:disabled {
+			opacity: 50%;
+		}
+	}
+	.sgy-button-hollow {
+		@include button-base($button-border-radius, $clickable-f-size, $button-hollow-padding);
+		@include button-hollow(1px);
+		@include button-hollow-states(map-values($base-hollow-buttons)...);
+		// @include button-settings(300);
+		color: $text-0!important; // there is no specific settings to seperate the border and the colour in hollow-states
+	}
+
+	.sgy-loader-button {
+		position: relative;
+		.sgy-loader {
+			height: 24px;
+			left: calc(100% - 36px);
+			top: calc(50% - 12px);
+			width: 24px;
+			&:before {
+				border-width: 4px;
+			}
+		}
+		@include media-breakpoint-down(lg, $breakpoints) {
+			max-width: 140px;
+			.sgy-loader {
+				height: 18px;
+				left: calc(100% - 24px);
+				top: calc(50% - 9px);
+				width: 18px;
+				&:before {
+					border-width: 3px;
+				}
+			}
+		}
+	}

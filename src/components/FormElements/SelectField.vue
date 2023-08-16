@@ -1,22 +1,28 @@
 <template >
-  <div class="vue-select-wrapper field">
-    <label v-if="inputLabel"
-      class="field-label"
+  <div
+    class="sgy-vue-select-wrapper"
+    :class="`sgy-${inputValue[inputOptionLabels]}-selection`"
+    v-if="inputOptions"
+  >
+    <label
+      v-if="inputLabel"
+      class="sgy-field-label"
     >{{ inputLabel }}</label>
     <VueMultiselect
+      :tabindex="0"
       :track-by="inputOptionLabels"
       :label="inputOptionLabels"
-      :model-value="value"
+      :model-value="inputValue"
       :options="inputOptions"
       :show-labels="false"
       :searchable="false"
       :allow-empty="false"
-      @update:model-value="(val) => {value = val; $emit('updatedInput', val)}"
+      @update:model-value="(val) => {inputValue = val; $emit('updatedInput', val)}"
     ></VueMultiselect>
   </div>
 </template>
 <script setup>
-import { ref, reactive, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import VueMultiselect from "vue-multiselect";
 const props = defineProps({
   inputOptions: {
@@ -33,26 +39,10 @@ const props = defineProps({
   inputLabel: {
     type: String,
   },
-})
-const value = ref(props.inputValue)
+}),
+{ inputOptions, inputOptionLabels, inputValue, inputLabel } = toRefs(props)
 
 </script>
 <style lang="scss">
   @import 'vue-multiselect/dist/vue-multiselect.css';
-  .vue-select-wrapper {
-    margin-bottom: 1rem;
-  }
-  // .field {
-  //   display: flex;
-  //   flex-direction: column;
-  //   margin-bottom: 1rem;
-  //   width: 100%;
-  //   &-label {
-  //     display: block;
-  //     font-family: "Roboto Slab",georgia,serif;
-  //     font-weight: 700;
-  //     margin-bottom: .25rem;
-  //     transition: color .5s;
-  //   }
-  // }
 </style>

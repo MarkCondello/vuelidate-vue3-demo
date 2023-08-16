@@ -1,11 +1,7 @@
-@use '../globals/palette.scss' as *;
-@use '../globals/mixins.scss' as *;
+@use '../config/variables.scss' as *;
+@use '../helpers/mixins.scss' as *;
 
-$checkboxBorderSize: 1px;
-$checkboxPadding: 2px;
-$checkboxSize: 24px;
-
-.checkbox-radio {
+.sgy-checkbox-radio {
   @include label;
   display: block;
   height: calc($checkboxSize + (2 * $checkboxBorderSize) + (2 * $checkboxPadding));
@@ -38,7 +34,7 @@ $checkboxSize: 24px;
       text-align: left;
       &:before {
         content: '';
-        border-color: map-get($palette, 'l-gray');
+        border-color: $l-gray;
         border-radius: 4px;
         border-style: solid;
         border-width: $checkboxBorderSize;
@@ -53,12 +49,12 @@ $checkboxSize: 24px;
         width: $checkboxSize;
       }
     }
-    &.active + span:before {
+    &.sgy-active + span:before {
       content: '';
       display: block;
-      background-color: map-get($palette, 'cta');
-      border-color: map-get($palette, 'cta');
-      background-image: url("/images/icons/checkbox-tick.svg");
+      background-color: $cta;
+      border-color: $cta;
+      // background-image: url("/images/icons/checkbox-tick.svg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: 17px 13px;
@@ -67,10 +63,10 @@ $checkboxSize: 24px;
   &-error {
     input {
       + span {
-        color: map-get($palette, 'danger');
+        color: $error;
         &:before {
           content: '';
-          border-color: map-get($palette, 'danger');
+          border-color: $error;
         }
       }
     }
@@ -78,7 +74,7 @@ $checkboxSize: 24px;
   &-valid {
     input {
       + span {
-        color: map-get($palette, 'success');
+        color: $success;
       }
     }
   }
@@ -88,10 +84,10 @@ $checkboxSize: 24px;
     }
     input {
       + span {
-        color: map-get($palette, 'disabled');
+        color: $disabled;
         &:before {
           content: '';
-          border-color: map-get($palette, 'disabled');
+          border-color: $disabled;
         }
       }
     }

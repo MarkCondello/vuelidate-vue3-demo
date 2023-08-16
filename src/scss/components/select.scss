@@ -1,15 +1,147 @@
-@use '../globals/palette.scss' as *;
-@use '../globals/mixins.scss' as *;
+@use '../library/breakpoints.scss' as *;
+@use '../config/palette.scss' as *;
+@use '../config/variables.scss' as *;
+@use '../helpers/mixins.scss' as *;
 
-.selectInput {
-  border: none;
-  padding: 0;
-  margin: 0;
-  &-label {
-    @include label;
+.sgy-vue-select-wrapper {
+  border-radius: 0;
+  color: $d-gray;
+  display: flex;
+  position: relative;
+  z-index: 1;
+  ul, li {
+    display: block;
+    margin-bottom: 0;
+    padding: 0;
+    .multiselect__option {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 10px;
+    }
   }
-  &-wrapper {
-    align-items: flex-start;
+  .multiselect {
+    width: auto;
+    transition: width .3s ease-in-out;
+    &__content-wrapper {
+      border: 1px solid $l-gray;
+      min-width: 120px;
+    }
+  }
+  .multiselect,
+  .multiselect__tags {
+    min-height: auto;
+    height: 100%;
+  }
+  .multiselect__single {
+    border-radius: 0;
+    color: $text-0;
+    cursor: pointer;
+    height: 100%;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+    // &::after {
+    //   background-color: $input-borders;
+    //   bottom: 0;
+    //   content: '';
+    //   height: 3px;
+    //   left: 0;
+    //   position: absolute;
+    //   transition: background-color .5s;
+    //   width: 100%;
+    //   z-index: -1;
+    // }
+  }
+  .multiselect__select {
+    align-items: center;
     display: flex;
+    height: 20px;
+    justify-content: center;
+    padding: 0;
+    right: 0;
+    top: 10px;
+    width: 20px;
+    z-index: 100;
+    &:before {
+      background-color: $primary;
+      // background-image: url($imgs-path + "icons/triangle.svg");
+      background-image: url("/images/icons/triangle.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      border: none;
+      border-radius: 50%;
+      display: block;
+      height: 18px;
+      margin: 0;
+      right: 0;
+      top: 0;
+      width: 18px;
+    }
+  }
+  .multiselect__option--highlight {
+    background-color: rgba($bg-3, .25);
+    color: $text-0;
+  }
+  .multiselect__option--selected {
+    background-color: $secondary;
+    color: $text-1;
+    font-weight: 500;
+  }
+  &.sgy-yearly-selection {
+    .multiselect {
+      width: 95px;
+    }
+  }
+  &.sgy-monthly-selection {
+    .multiselect {
+      width: 120px;
+    }
+  }
+  &.sgy-fortnightly-selection {
+    .multiselect {
+      width: 145px;
+    }
+  }
+  &.sgy-weekly-selection {
+    .multiselect {
+      width: 105px;
+    }
+  }
+  @include media-breakpoint-down (lg, $breakpoints) {
+    .multiselect__single {
+      &::after {
+        bottom: -1px
+      }
+      @supports (-webkit-touch-callout: none) { // ios
+        &::after {
+          bottom: -5.5px
+        }
+      }
+    }
+    .multiselect__select {
+      top: 0px;
+    }
+    &.sgy-yearly-selection {
+      .multiselect {
+        width: 80px;
+      }
+    }
+    &.sgy-monthly-selection {
+      .multiselect {
+        width: 100px;
+      }
+    }
+    &.sgy-fortnightly-selection {
+      .multiselect {
+        width: 125px;
+      }
+    }
+    &.sgy-weekly-selection {
+      .multiselect {
+        width: 85px;
+      }
+    }
   }
 }

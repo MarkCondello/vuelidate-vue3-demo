@@ -153,9 +153,9 @@ import { required, email, minLength, between, helpers } from '@vuelidate/validat
 import { reactive, computed } from 'vue'
 import { useFormStore } from './stores/form'
 
-import inputField from './components/InputField.vue'
-import selectField from './components/SelectField.vue'
-import CheckboxRadio from './components/CheckBoxRadio.vue'
+import inputField from './components/FormElements/InputField.vue'
+import selectField from './components/FormElements/SelectField.vue'
+import CheckboxRadio from './components/FormElements/CheckBoxRadio.vue'
 
 export default {
   components: {

@@ -1,0 +1,160 @@
+@use '../' as *;
+
+@mixin button-base($radius: 4px, $f-size: 14px, $padd: 1rem) {
+    // border: none; // this has been removed to support border colors on focus
+    border: 2px solid;
+    border-radius: $radius;
+    cursor: pointer;
+    display: inline-block;
+    font-size: $f-size;
+    line-height: 1;
+    outline: none;
+    padding: $padd;
+    text-decoration: none;
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+@mixin button-common-states(
+    $color: #8a8a8a,
+    $hover-color: $color,
+    $bg-color: #e6e6e6,
+    $bg-change: "",
+    $intesity: 15%,
+    $bg-hover: "",
+    $focus-bg-color: "",
+    $focus-border-color: "",
+    $focus-color: "",
+){
+    &, &:link, &:visited {
+        color: $color;
+        background-color: $bg-color;
+        border-color: $bg-color;
+        transition: color 0.2s linear, background-color 0.2s linear, border-color 0.2s linear;
+        svg {
+            fill: $color;
+            transition: fill 0.2s linear,
+        }
+    }
+    &:hover, &:active {
+        color: $hover-color;
+        @if $bg-hover != "" {
+            background-color: $bg-hover;
+            border-color: $bg-hover;
+        }
+        @if $bg-change == "shade" {
+            background-color: mix(#000, $bg-color, $intesity);
+        }
+        @if $bg-change == "tint" {
+            background-color: mix(#FFF, $bg-color, $intesity);
+        }
+        svg {
+            fill: $hover-color;
+        }
+    }
+    &:focus {
+        @if $focus-border-color != "" {
+            border-color: $focus-border-color;
+        }
+        @if $focus-bg-color != "" {
+            background-color: $focus-bg-color;
+        }
+        @if $focus-color != "" {
+            color: $focus-color;
+        }
+    }
+    &:disabled {
+        color: tint($color, 25%);
+        background-color: tint($bg-color, 25%);
+    }
+}
+@mixin button-sml(
+    $f-size: 14px,
+    $l-height: 1,
+    $padding: .5rem
+) {
+    font-size: $f-size;
+    line-height: $l-height;
+    padding: $padding;
+}
+@mixin button-hollow-states(
+    $color: #767676,
+    $hover-color: #8a8a8a,
+    $bg-change: "",
+    $bg-hover: "",
+    $focus-border-color: ""
+){
+    &, &:link, &:visited {
+        border-color: $color;
+        color: $color;
+        transition: color 0.2s linear, background-color 0.2s linear, border-color 0.2s linear;
+        svg {
+           fill: $color;
+           transition: fill 0.2s linear,
+        }
+    }
+    &:hover, &:active {
+        border-color: $hover-color;
+        color: $hover-color;
+        svg {
+            fill: $hover-color;
+        }
+        @if $bg-change == "tint" {
+            background-color: mix(#000, $color, 15%);
+        }
+        @if $bg-change == "shade" {
+            background-color: mix(#fff, $color, 85%);
+        }
+        @if $bg-hover {
+            background-color: $bg-hover;
+            border-color: $bg-hover;
+        } @else {
+            border-color: $hover-color;
+        }
+    }
+    &:focus {
+        background-color: transparent;
+        @if $focus-border-color != "" {
+            border-color: $focus-border-color;
+        }
+    }
+    &:disabled {
+        background-color: tint($hover-color, 25%);
+        color: mix(#000, $color, 25%);
+    }
+}
+@mixin button-hollow($border-width: 1px) {
+    background-color: transparent;
+    border-width: $border-width;
+    border-style: solid;
+}
+@mixin btn-icon-base($iconSize: 14px){
+    position: relative;
+    padding: .6rem .75rem;
+    i, span, svg {
+        font-size: $iconSize;
+        height: $iconSize;
+        width: $iconSize;
+    }
+}
+@mixin btn-with-icon($iconSize: 14px) {
+    &.icon-right {
+        @include btn-icon-base($iconSize);
+        padding-right: calc(2 * #{$iconSize});
+        i, span, svg {
+            position: absolute;
+            right: calc(#{$iconSize} / 2);
+            top: calc(50% - (#{$iconSize} / 2));
+        }
+    }
+    &.icon-left {
+        @include btn-icon-base($iconSize);
+        padding-left: calc(2 * #{$iconSize});
+        
+        i, span, svg {
+            position: absolute;
+            left: calc(#{$iconSize} / 2);
+            top: calc(50% - (#{$iconSize} / 2));
+        }
+    }
+}

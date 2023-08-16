@@ -32,8 +32,8 @@ import { reactive, computed } from 'vue'
 import { useFormStore } from '../stores/form'
 import Formatter from '../helpers/formatter.js'
 
-import inputField from '../components/InputField.vue'
-import selectField from '../components/SelectField.vue'
+import inputField from '../components/FormElements/InputField.vue'
+import selectField from '../components/FormElements/SelectField.vue'
 
 
 const formStore = useFormStore(),

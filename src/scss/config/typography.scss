@@ -1,0 +1,156 @@
+@use '../library/base.scss' as *;
+// @use '../library/breakpoints.scss' as *;
+@use '../library/elements/helpers.scss' as *;
+@use './variables.scss' as *;
+
+// @use './font.scss' as *;
+// $font-family: 'GT Walsheim', sans-serif;
+// $heading-family: 'GT Walsheim', sans-serif;
+
+$heading-family: serif;
+$font-family: sans-serif;
+@mixin body-font-regular {
+	font-family: $font-family;
+	font-weight: 400;
+	text-transform: none;
+}
+@mixin body-font-semi-bold {
+	font-family: $font-family;
+	font-weight: 500;
+	text-transform: none;
+}
+@mixin body-font-bold {
+	font-family: $font-family;
+	font-weight: 700;
+	text-transform: none;
+}
+@mixin body-font-light {
+	font-family: $font-family;
+	font-weight: 300;
+	text-transform: none;
+}
+@mixin heading-font-light {
+	font-family: $heading-family;
+	font-weight: 300;
+	text-transform: none;
+}
+@mixin heading-font-regular {
+	font-family: $heading-family;
+	font-weight: 400;
+	text-transform: none;
+}
+@mixin heading-font-medium {
+	font-family: $heading-family;
+	font-weight: 500;
+	text-transform: none;
+}
+@mixin heading-font-bolder {
+	font-family: $heading-family;
+	font-weight: 600;
+	text-transform: none;
+}
+@mixin heading-font-bold {
+	font-family: $heading-family;
+	font-weight: 700;
+	text-transform: none;
+}
+@mixin font-color {
+	color: $text-0;
+}
+@mixin heading-font-color {
+	color: $text-0;
+}
+@mixin h1($with-margins: false) {
+	@include heading-font-regular;
+	@include font-color;
+	font-size: 38px;
+	line-height: 1;
+	@if ($with-margins) {
+		margin: -5px 0 12px;
+	}
+	@include media-breakpoint-down (lg, $breakpoints) {
+		margin-bottom: 18px;
+	}
+}
+@mixin h2($with-margins: false) {
+	@include heading-font-medium;
+	@include heading-font-color;
+	font-size: 24px;
+	line-height: 1.2;
+	@if ($with-margins) {
+		margin: -3px 0 12px;
+	}
+}
+@mixin h3($with-margins: false) {
+	@include heading-font-regular;
+	@include heading-font-color;
+	font-size: 24px;
+	line-height: 32px;
+	@if ($with-margins) {
+		margin: -3px 0 8px;
+	}
+	@include media-breakpoint-down (lg, $breakpoints) {
+		font-size: 18px;
+	}
+}
+@mixin h4($with-margins: false) {
+	@include heading-font-regular;
+	@include heading-font-color;
+	font-size: 22px;
+	line-height: 32px;
+	@if ($with-margins) {
+		margin: -1px 0 8px;
+	}
+}
+@mixin h5($with-margins: false) {
+	@include heading-font-bold;
+	@include heading-font-color;
+	font-size: 20px;
+	line-height: 24px;
+	@if ($with-margins) {
+		margin: -1px 0 4px;
+	}
+}
+
+@mixin p($with-margins: false) {
+	@include body-font-regular;
+	@include font-color;
+	font-size: 15px;
+	line-height: 22px;
+	@if ($with-margins) {
+		margin: 0 0 16px;
+	}
+	strong,
+	b {
+		font-weight: 700;
+	}
+}
+@mixin p-sml($with-margins: false) {
+	@include body-font-light;
+	@include font-color;
+	font-size: 13px;
+	line-height: 2;
+	@if ($with-margins) {
+		margin: 0 0 5px;
+	}
+
+	strong {
+		font-weight: 700;
+	}
+}
+@mixin p-tiny($with-margins: false) {
+	@include body-font-regular();
+	@include font-color;
+	font-size: 13px;
+	line-height: 1.25;
+	@if ($with-margins) {
+		margin: 0 0 5px;
+	}
+
+	strong {
+		font-weight: 700;
+	}
+	// @include media-breakpoint-down(lg, $breakpoints) {
+	// 	font-size: 15px;
+	// }
+}
